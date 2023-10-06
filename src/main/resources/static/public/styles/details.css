@@ -1,0 +1,47 @@
+.details{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.details-image{
+    flex: 1 1 20rem;
+    margin-left: 10rem;
+}
+
+.details-image img{
+    max-width: 25rem;
+    max-height: 40rem;
+    width:100%;
+}
+.details-reviews,
+.details-info,
+.details-action
+{
+    flex: 1 1 10rem;
+}
+
+
+.details-info ul,
+.details-action ul {
+    padding:0;
+    list-style-type: none;
+}
+
+.details-info h1{
+    font-size:2rem;
+    margin:0;
+}
+
+.details-info li,
+.details.action li {
+    margin-bottom: 1rem;
+}
+
+.details-action{
+    border:0.1rem #808080 solid;
+    border-radius: 0.5rem;
+    background-color: #f8f8f8;
+    padding: 1rem;
+}

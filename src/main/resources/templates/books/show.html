@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/general.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/books.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/rating.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/details.css}"/>
+</head>
+<body>
+<div class="overlay" id="loading-overlay">Загрузка...</div>
+<div class="overlay" id="message-overlay"></div>
+<div class="grid-container">
+    <header id="header-container">
+    </header>
+    <main id ="main-container">
+        <div class="content">
+            <div class="details">
+                <div class="details-image">
+                    <img th:src="@{/public/pictures/{id}/{filename}(id=${book.getId_book()}, filename=${book.getImage()})}" th:alt="${book.getName()}"/>
+                </div>
+                <div class="details-info">
+                    <ul>
+                        <li>
+                            <h1 th:text="${book.getName()}"></h1>
+                        </li>
+                        <li>
+                            <div class="rating">
+                                <div th:if="${book.getReviews().isEmpty()}"><span>Нет отзывов</span></div>
+                                <div th:unless="${book.getReviews().isEmpty()}">
+                                <span>
+                                <i th:if="${book.getRating(book.getReviews()) >= 1}" class="fa fa-star"></i>
+                                <i th:if="${book.getRating(book.getReviews()) >= 0.5 && book.getRating(book.getReviews()) < 1}" class = "fa fa-star-half-o"></i>
+                                <i th:if="${book.getRating(book.getReviews()) < 0.5}" class = "fa fa-star-o" style="color:black"></i>
+                                </span>
+
+                                    <span>
+                                <i th:if="${book.getRating(book.getReviews()) >= 2}" class="fa fa-star"></i>
+                                <i th:if="${book.getRating(book.getReviews()) >= 1.5 && book.getRating(book.getReviews()) < 2}" class = "fa fa-star-half-o"></i>
+                                <i th:if="${book.getRating(book.getReviews()) < 1.5}" class = "fa fa-star-o" style="color:black"></i>
+                                </span>
+
+                                    <span>
+                                <i th:if="${book.getRating(book.getReviews()) >= 3}" class="fa fa-star"></i>
+                                <i th:if="${book.getRating(book.getReviews()) >= 2.5 && book.getRating(book.getReviews()) < 3}" class = "fa fa-star-half-o"></i>
+                                <i th:if="${book.getRating(book.getReviews()) < 2.5}" class = "fa fa-star-o" style="color:black"></i>
+                                </span>
+
+                                    <span>
+                                <i th:if="${book.getRating(book.getReviews()) >= 4}" class="fa fa-star"></i>
+                                <i th:if="${book.getRating(book.getReviews()) >= 3.5 && book.getRating(book.getReviews()) < 4}" class = "fa fa-star-half-o"></i>
+                                <i th:if="${book.getRating(book.getReviews()) < 3.5}" class = "fa fa-star-o" style="color:black"></i>
+                                </span>
+
+                                    <span>
+                                 <i th:if="${book.getRating(book.getReviews()) >= 5}" class="fa fa-star"></i>
+                                <i th:if="${book.getRating(book.getReviews()) >= 4.5 && book.getRating(book.getReviews()) < 5}" class = "fa fa-star-half-o"></i>
+                                <i th:if="${book.getRating(book.getReviews()) < 4.5}" class = "fa fa-star-o" style="color:black"></i>
+                                </span>
+                                    <span th:text="${book.getReviews().size()} + ' отзывов'"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            Цена: <strong th:text="${book.getPrice()} + ' BYN'"></strong>
+                        </li>
+                        <li>
+                            Автор: <strong th:text="${book.getAuthor()}"></strong>
+                        </li>
+                        <li>
+                            Количество страниц: <strong th:text="${book.getPages()}"></strong>
+                        </li>
+                        <li>
+                            Жанр: <strong th:text="${book.getGenre()}"></strong>
+                        </li>
+                        <li>
+                            Год издания: <strong th:text="${book.getYear()}"></strong>
+                        </li>
+                    </ul>
+                </div>
+                <div class="details-action">
+                    <ul>
+                        <li>
+                            Цена: <strong th:text="${book.getPrice()}"></strong>
+                        </li>
+                        <li>
+                            Статус: <span th:class="${book.getAmount() > 0} ? 'success' : 'error'" th:text="${book.getAmount() > 0} ? 'В наличии' : 'Нет в наличии'"></span>
+                        </li>
+                        <li>
+                            <button id="add-button" class="fw primary">Добавить в корзину </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="details-reviews">
+                    <div class="form-container">
+                        <form id="review-form" th:method="POST" th:action="@{/review/{id}(id=${book.getId_book()})}" th:object="${review}" th:unless="${#strings.equals(currentUser, 'anonymousUser')}">
+                            <ul class="form-items">
+                                <li> <h3>Оставьте свой отзыв</h3></li>
+                                <li>
+                                    <label for="rating">Рейтинг</label>
+                                    <select required name="rating" id="rating" th:field="*{review}">
+                                        <option value="">Выберите</option>
+                                        <option value="1">1 = Плохо</option>
+                                        <option value="2">2 = Не очень</option>
+                                        <option value="3">3 = Нормально</option>
+                                        <option value="4">4 = Хорошо</option>
+                                        <option value="5">5 = Очень хорошо</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <button type="submit" class="primary">Отправить</button>
+                                </li>
+                            </ul>
+                        </form>
+                        <div th:if="${#strings.equals(currentUser, 'anonymousUser')}" style="margin-left: 10px;">
+                            <strong><a th:href="@{/login/auth}">Войдите</a></strong> чтобы написать отзыв.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        Общество с ограниченной ответственностью «Виктор Диктор». Свидетельство о государственной регистрации выдано Минским горисполкомом от 19.04.2018 с регистрационным номером 193067319. УНП 193067319.
+        Юр. адрес: 220073, г. Минск, ул. Скрыганова, д. 14, каб. 36. Время работы с понедельника по пятницу с 9:00 до 17:30. Контакты: 695-25-25 МТС, A1, life:), nikonenkokdoske@yandex.ru.
+    </footer>
+</div>
+
+
+</body>
+</html>

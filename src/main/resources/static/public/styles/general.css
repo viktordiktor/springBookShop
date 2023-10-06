@@ -1,0 +1,125 @@
+*{
+    box-sizing: border-box;
+}
+html{
+    font-size: 62.5%;
+}
+body{
+    height: 100vh;
+    font: 1.6rem 'Roboto Slab', serif;
+    margin: 0;
+}
+a{
+    color:black;
+    text-decoration: none;
+}
+button{
+    cursor:pointer;
+}
+input,
+button,
+select,
+textarea{
+    font: 1.6rem helvetica;
+    padding: 1rem;
+    border:0.1rem #808080 solid;
+    border-radius: 0.5rem;
+}
+input:hover,
+button:hover{
+    border: 0.1rem #404040 solid;
+}
+button.primary{
+    background-color:gold;
+}
+
+.overlay {
+    display:none;
+    position: fixed;
+    z-index: 1000;
+    left:0;
+    width:100%;
+    height: 100%;
+    background-color: rgba(16,16,16, 0.5);
+}
+.overlay.active{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+}
+.overlay > div{
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    max-width: 40rem;
+}
+.overlay > div > *{
+    margin: 2rem;
+}
+
+.fw{
+    width:100%;
+}
+.success{
+    color: green;
+}
+.error{
+    color:#c04040;
+}
+a:hover{
+    color: salmon;
+}
+.grid-container{
+    display: grid;
+    grid-template-areas:
+    'header'
+    'main'
+    'footer';
+    grid-template-columns: 1fr;
+    grid-template-rows: 10rem 1fr 5rem;
+    height:100%
+}
+
+header{
+    grid-area: header;
+    background-color: sienna;
+    color:aliceblue;
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+}
+header a{
+    font-size: 2.2rem;
+    color:white;
+    text-shadow: 1px 1px 1px gray;
+    text-decoration: none;
+    padding-right: 1rem;
+}
+
+header img{
+    max-width: 28rem;
+    max-height: 24rem;
+}
+
+header a:hover{
+    color:salmon
+}
+
+.brand a{
+    font-size: 3rem;
+    font-weight: bold;
+    padding-left: 1rem;
+}
+
+footer{
+    background-color: sienna;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1rem;
+}

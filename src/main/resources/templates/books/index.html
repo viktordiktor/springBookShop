@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/general.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/books.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/rating.css}"/>
+    <link rel="stylesheet" href="../../static/public/styles/books.css">
+</head>
+<body>
+<div class="overlay" id="loading-overlay">Загрузка...</div>
+<div class="overlay" id="message-overlay"></div>
+<div class="grid-container">
+    <header id="header-container">
+    </header>
+    <main id ="main-container">
+        <ul class="books" >
+            <li th:each="book : ${books}">
+                <div class="book">
+                    <a th:href="@{/books/{id}(id=${book.getId_book()})}">
+                        <img th:src="@{/public/pictures/{id}/{filename}(id=${book.getId_book()}, filename=${book.getImage()})}" th:alt="${book.getName()}"/>
+                    </a>
+                    <div class="book-name">
+                        <a th:href="@{/books/{id}(id=${book.getId_book()})}" th:text="${book.getName()}">Name</a>
+                    </div>
+                    <div class="book-rating">
+                        <div class="rating">
+                            <div th:if="${book.getReviews().isEmpty()}"><span>Нет отзывов</span></div>
+                            <div th:unless="${book.getReviews().isEmpty()}">
+                                <span>
+                                <i th:if="${book.getRating(book.getReviews()) >= 1}" class="fa fa-star"></i>
+                                <i th:if="${book.getRating(book.getReviews()) >= 0.5 && book.getRating(book.getReviews()) < 1}" class = "fa fa-star-half-o"></i>
+                                <i th:if="${book.getRating(book.getReviews()) < 0.5}" class = "fa fa-star-o" style="color:black"></i>
+                                </span>
+
+                                <span>
+                                <i th:if="${book.getRating(book.getReviews()) >= 2}" class="fa fa-star"></i>
+                                <i th:if="${book.getRating(book.getReviews()) >= 1.5 && book.getRating(book.getReviews()) < 2}" class = "fa fa-star-half-o"></i>
+                                <i th:if="${book.getRating(book.getReviews()) < 1.5}" class = "fa fa-star-o" style="color:black"></i>
+                                </span>
+
+                                <span>
+                                <i th:if="${book.getRating(book.getReviews()) >= 3}" class="fa fa-star"></i>
+                                <i th:if="${book.getRating(book.getReviews()) >= 2.5 && book.getRating(book.getReviews()) < 3}" class = "fa fa-star-half-o"></i>
+                                <i th:if="${book.getRating(book.getReviews()) < 2.5}" class = "fa fa-star-o" style="color:black"></i>
+                                </span>
+
+                                <span>
+                                <i th:if="${book.getRating(book.getReviews()) >= 4}" class="fa fa-star"></i>
+                                <i th:if="${book.getRating(book.getReviews()) >= 3.5 && book.getRating(book.getReviews()) < 4}" class = "fa fa-star-half-o"></i>
+                                <i th:if="${book.getRating(book.getReviews()) < 3.5}" class = "fa fa-star-o" style="color:black"></i>
+                                </span>
+
+                                <span>
+                                 <i th:if="${book.getRating(book.getReviews()) >= 5}" class="fa fa-star"></i>
+                                <i th:if="${book.getRating(book.getReviews()) >= 4.5 && book.getRating(book.getReviews()) < 5}" class = "fa fa-star-half-o"></i>
+                                <i th:if="${book.getRating(book.getReviews()) < 4.5}" class = "fa fa-star-o" style="color:black"></i>
+                                </span>
+
+                                <span th:text="${book.getReviews().size()} + ' отзывов'"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="book-author">
+                        <p th:text="${book.getAuthor()}">Author</p>
+                    </div>
+                    <div class="book-genre">
+                        <p th:text="${book.getGenre()}">Genre</p>
+                    </div>
+                    <div class="book-price">
+                        <p th:text="${book.getPrice()} + ' BYN'">Price</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </main>
+    <footer>
+        Общество с ограниченной ответственностью «Виктор Диктор». Свидетельство о государственной регистрации выдано Минским горисполкомом от 19.04.2018 с регистрационным номером 193067319. УНП 193067319.
+        Юр. адрес: 220073, г. Минск, ул. Скрыганова, д. 14, каб. 36. Время работы с понедельника по пятницу с 9:00 до 17:30. Контакты: 695-25-25 МТС, A1, life:), nikonenkokdoske@yandex.ru.
+    </footer>
+</div>
+
+
+</body>
+</html>
+

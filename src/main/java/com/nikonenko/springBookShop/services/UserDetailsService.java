@@ -1,0 +1,58 @@
+package com.nikonenko.springBookShop.services;
+
+import com.nikonenko.springBookShop.models.Person;
+import com.nikonenko.springBookShop.models.User;
+import com.nikonenko.springBookShop.repositories.PersonRepository;
+import com.nikonenko.springBookShop.repositories.UserRepository;
+import com.nikonenko.springBookShop.secutiry.UserDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+
+    private final UserRepository userRepository;
+
+
+    @Autowired
+    public UserDetailsService(UserRepository userRepository, PersonRepository personRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByEmail(username);
+        if(user.isEmpty())
+            throw new UsernameNotFoundException("User not found!");
+        return new UserDetails(user.get());
+    }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
+    }
+
+    public Optional<User> findOne(int id){
+        return userRepository.findById(id);
+    }
+
+    @Transactional
+    public void save(User user){
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void update(int id, User updatedUser){
+        updatedUser.setId_user(id);
+        userRepository.save(updatedUser);
+    }
+
+    @Transactional
+    public void delete(int id){
+        userRepository.deleteById(id);
+    }
+}

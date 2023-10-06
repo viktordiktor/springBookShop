@@ -1,0 +1,41 @@
+.books{
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+.books li{
+    flex: 0 1 30rem;
+    margin: 1rem 1rem 0;
+    height: 42rem;
+    border-top:0.2rem #e0e0e0 solid;
+}
+.book {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+}
+.book img {
+    max-height: 22rem;
+    max-width: 16rem;
+    margin-top: 2rem;
+}
+.book-name{
+    line-height: 2.2rem;
+}
+
+.book-author{
+    font-size: 1.4rem;
+    color:black;
+}
+
+.book-genre{
+    font-size:1.2rem;
+    color:#808080;
+}
+.book-price{
+    font-size: 2rem;
+}

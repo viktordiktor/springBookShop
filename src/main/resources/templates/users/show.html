@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<body>
+<p th:text="'ID: ' + ${user.getId_user()}"></p>
+<p th:text="'Email:' + ${user.getEmail()}"></p>
+<p th:text="'Password: ' + ${user.getPassword()}"></p>
+<p th:text="'Password: ' + ${user.getRole()}"></p>
+<form th:action="@{/logout}" th:method="post">
+    <input type="submit" value="Logout"/>
+</form>
+
+</body>
+</html>
+
