@@ -94,7 +94,12 @@
                             Статус: <span th:class="${book.getAmount() > 0} ? 'success' : 'error'" th:text="${book.getAmount() > 0} ? 'В наличии' : 'Нет в наличии'"></span>
                         </li>
                         <li>
-                            <button id="add-button" class="fw primary">Добавить в корзину </button>
+                            <form th:if="${#strings.equals(currentUser, 'anonymousUser')}" th:method="GET" th:action="@{/auth/login}">
+                                <button id="add-button-login" class="fw primary" type="submit">Войти чтобы добавить в корзину</button>
+                            </form>
+                            <form th:unless="${#strings.equals(currentUser, 'anonymousUser')}" th:method="POST" th:action="@{/cart/{id}(id=${book.getId_book()})}">
+                                <button id="add-button" th:value="${book.id_book}"  class="fw primary" type="submit">Добавить в корзину</button>
+                            </form>
                         </li>
                     </ul>
                 </div>

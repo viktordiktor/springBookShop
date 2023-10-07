@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import java.util.Objects;
+
 import java.util.List;
 
 @Entity
@@ -50,6 +50,9 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
     private List<Review> reviews;
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
+    private List<CartDetails> cartDetails;
+
     @ManyToMany
     @JoinTable(
             name= "book_order",
@@ -62,7 +65,7 @@ public class Book {
     }
 
     public Book(String name, String author, Integer year, Integer pages, String genre, Integer price,
-                Integer amount, String image, List<Review> reviews, List<Order> orders) {
+                Integer amount, String image, List<Review> reviews, List<Order> orders, List<CartDetails> cartDetails) {
         this.name = name;
         this.author = author;
         this.year = year;
@@ -73,6 +76,7 @@ public class Book {
         this.image = image;
         this.reviews = reviews;
         this.orders = orders;
+        this.cartDetails = cartDetails;
     }
 
     @Transient
@@ -170,5 +174,11 @@ public class Book {
         this.orders = orders;
     }
 
+    public List<CartDetails> getCartDetails() {
+        return cartDetails;
+    }
 
+    public void setCartDetails(List<CartDetails> cartDetails) {
+        this.cartDetails = cartDetails;
+    }
 }

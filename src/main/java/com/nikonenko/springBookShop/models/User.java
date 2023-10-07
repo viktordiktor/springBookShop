@@ -3,7 +3,6 @@ package com.nikonenko.springBookShop.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -35,15 +34,20 @@ public class User{
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true)
+    @PrimaryKeyJoinColumn
+    private Cart cart;
+
     public User(){}
 
-    public User(String email, String password, String role, Person person, List<Review> reviews, List<Order> orders) {
+    public User(String email, String password, String role, Person person, List<Review> reviews, List<Order> orders, Cart cart) {
         this.email = email;
         this.password = password;
         this.role = role;
         this.person = person;
         this.reviews = reviews;
         this.orders = orders;
+        this.cart = cart;
     }
 
 
@@ -103,4 +107,11 @@ public class User{
         this.orders = orders;
     }
 
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 }
