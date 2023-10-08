@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список книг</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/general.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/books.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/rating.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/details.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/cart.css}"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<body>
+<div class="overlay" id="loading-overlay">Загрузка...</div>
+<div class="overlay" id="message-overlay"></div>
+<div class="grid-container">
+  <header id="header-container">
+  </header>
+  <main id ="main-container">
+    <div class="content cart">
+      <div class="cart-list">
+        <ul class="cart-list-container">
+          <li>
+            <h3>Корзина</h3>
+            <div>Цена</div>
+          </li>
+          <div th:if="${cartDetails.isEmpty()}">Корзина пуста. <a href="/#/">Положите в корзину хотя бы одну книгу</a></div>
+          <li th:unless="${cartDetails.isEmpty()}" th:each="cartDetail : ${cartDetails}">
+            <div class="cart-image">
+              <img th:src="@{/public/pictures/{id}/{filename}(id=${cartDetail.getBook().getId_book()}, filename=${cartDetail.getBook().getImage()})}" th:alt="${cartDetail.getBook().getName()}" />
+            </div>
+            <div class="cart-name">
+              <div>
+                <a th:text="${cartDetail.getBook().getName()}" th:href="@{/books/{id}(id=${cartDetail.getBook().getId_book()})}">
+                </a>
+              </div>
+              <div>
+                Количество:
+                <select class="qty-select" th:id="${cartDetail.getId_details()}" th:onchange="'javascript:zaza(\''+ ${cartDetail.getId_details()} +'\');'">
+                  <option th:each="i: ${#numbers.sequence(1, cartDetail.getBook().getAmount())}" th:value="${i}" th:text="${i}" th:selected="${i==cartDetail.getAmount()}"/>
+                </select>
+                <form th:method="DELETE" th:action="@{/cart/{id}(id=${cartDetail.getId_details()})}">
+                  <button type="submit" class="delete-button">
+                    Удалить
+                  </button>
+                </form>
+
+              </div>
+            </div>
+            <div class="cart-price" th:text="${cartDetail.getBook().getPrice()} + ' BYN'">
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="cart-action">
+        <h3 th:text="'Всего ' + ${cart.cartAmount()} + ': ' + ${cart.cartPrice()} + ' BYN'">
+        </h3>
+        <button id="checkout-button" class="primary fw">
+          Перейти к оплате
+        </button>
+      </div>
+    </div>
+  </main>
+  <footer>
+    Общество с ограниченной ответственностью «Виктор Диктор». Свидетельство о государственной регистрации выдано Минским горисполкомом от 19.04.2018 с регистрационным номером 193067319. УНП 193067319.
+    Юр. адрес: 220073, г. Минск, ул. Скрыганова, д. 14, каб. 36. Время работы с понедельника по пятницу с 9:00 до 17:30. Контакты: 695-25-25 МТС, A1, life:), nikonenkokdoske@yandex.ru.
+  </footer>
+</div>
+</body>
+</html>
+<script type="application/javascript" th:href="@{/webjars/jquery/3.7.1/jquery.min.js}">
+  function zaza(id){
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var selected = document.getElementById(id);
+    console.log(selected.value);
+    console.log(id)
+    $(document).ajaxSend(function(e, xhr, options) {
+      xhr.setRequestHeader(header, token);
+    });
+    $.ajax({
+      type: "POST",
+      url: '/cart/' + id +'/' + selected.value
+    });
+    $(document).ajaxStop(function(){
+      window.location.reload();
+    });
+  }
+
+</script>

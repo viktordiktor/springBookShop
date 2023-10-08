@@ -1,8 +1,10 @@
 package com.nikonenko.springBookShop.models;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.Transient;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "cart")
@@ -54,5 +56,15 @@ public class Cart {
 
     public void setCartDetails(List<CartDetails> cartDetails) {
         this.cartDetails = cartDetails;
+    }
+
+    public Integer cartPrice(){
+        return this.cartDetails.stream()
+                .mapToInt(test -> test.getAmount() * test.getBook().getPrice())
+                .sum();
+    }
+
+    public Integer cartAmount(){
+        return this.cartDetails.stream().mapToInt(CartDetails::getAmount).sum();
     }
 }
