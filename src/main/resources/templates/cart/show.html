@@ -32,7 +32,7 @@
             <h3>Корзина</h3>
             <div>Цена</div>
           </li>
-          <div th:if="${cartDetails.isEmpty()}">Корзина пуста. <a href="/#/">Положите в корзину хотя бы одну книгу</a></div>
+          <div th:if="${cartDetails.isEmpty()}">Корзина пуста. <a th:href="@{/books}">Положите в корзину хотя бы одну книгу</a></div>
           <li th:unless="${cartDetails.isEmpty()}" th:each="cartDetail : ${cartDetails}">
             <div class="cart-image">
               <img th:src="@{/public/pictures/{id}/{filename}(id=${cartDetail.getBook().getId_book()}, filename=${cartDetail.getBook().getImage()})}" th:alt="${cartDetail.getBook().getName()}" />
@@ -55,7 +55,7 @@
 
               </div>
             </div>
-            <div class="cart-price" th:text="${cartDetail.getBook().getPrice()} + ' BYN'">
+            <div class="cart-price" id="cart-price" th:text="${cartDetail.getBook().getPrice()} + ' BYN'">
             </div>
           </li>
         </ul>
@@ -63,9 +63,11 @@
       <div class="cart-action">
         <h3 th:text="'Всего ' + ${cart.cartAmount()} + ': ' + ${cart.cartPrice()} + ' BYN'">
         </h3>
-        <button id="checkout-button" class="primary fw">
+        <form th:method="GET" th:action="@{/order/details}">
+        <button type="submit" id="checkout-button" class="primary fw">
           Перейти к оплате
         </button>
+        </form>
       </div>
     </div>
   </main>

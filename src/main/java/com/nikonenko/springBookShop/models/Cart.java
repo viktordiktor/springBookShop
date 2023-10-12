@@ -18,7 +18,7 @@ public class Cart {
     @JoinColumn(name = "id_user")
     private User user;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = {CascadeType.REMOVE})
     private List<CartDetails> cartDetails;
 
     public Cart(){}

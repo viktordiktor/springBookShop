@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/general.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/books.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/rating.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/details.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/cart.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/order.css}"/>
+</head>
+<body>
+<div class="overlay" id="loading-overlay">Загрузка...</div>
+<div class="overlay" id="message-overlay"></div>
+<div class="grid-container">
+    <header id="header-container">
+    </header>
+    <main id ="main-container">
+        <div>
+            <h1 th:text="'Заказ №' + ${order.getId_order()}"></h1>
+            <div class="order">
+                <div class="order-info">
+                    <div>
+                        <h2>Доставка</h2>
+                        <div th:text="${order.getAddress()} + ', ' + ${order.getCity()} + ', ' + ${order.getPost_mail()} + ', ' + ${order.getPhone()}">
+                        </div>
+                        <div class="success" th:if="${order.getStatus().equals('Доставлено')}">Доставлено</div>
+                        <div class="error" th:unless="${order.getStatus().equals('Доставлено')}">Не доставлено</div>
+                    </div>
+                    <div>
+                        <ul class="cart-list-container">
+                            <li>
+                                <h2>Корзина</h2>
+                                <div>Цена</div>
+                            </li>
+
+                            <li th:each="bookEntry : ${bookAmountMap}">
+                                <div class="cart-image">
+                                    <img th:src="@{/public/pictures/{id}/{filename}(id=${bookEntry.getKey().getId_book()},
+                                    filename=${bookEntry.getKey().getImage()})}"
+                                            th:alt="${bookEntry.getKey().getName()}" />
+                                </div>
+                                <div class="cart-name">
+                                    <div>
+                                        <a th:href="@{/books/{id}(id=${bookEntry.getKey().getId_book()})}"
+                                           th:text="${bookEntry.getKey().getName()}"></a>
+                                    </div>
+                                    <div th:text="'Количество: ' + ${bookEntry.getValue()}"></div>
+                                </div>
+                                <div class="cart-price" th:text="${bookEntry.getKey().getPrice()} + ' BYN'"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="order-action">
+                    <ul>
+                        <li class="total">
+                            <div>Суммарная стоимость</div>
+                            <div th:text="${orderPrice} + ' BYN'"></div>
+                        </li>
+<!--                        <li>-->
+<!--                            ${-->
+<!--                            !isDelivered && isAdmin-->
+<!--                            ?`<button id="deliver-order-button" class="primary fw"> Доставить заказ </button>`-->
+<!--                            : ''-->
+<!--                            }-->
+<!--                        </li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        Общество с ограниченной ответственностью «Виктор Диктор». Свидетельство о государственной регистрации выдано Минским горисполкомом от 19.04.2018 с регистрационным номером 193067319. УНП 193067319.
+        Юр. адрес: 220073, г. Минск, ул. Скрыганова, д. 14, каб. 36. Время работы с понедельника по пятницу с 9:00 до 17:30. Контакты: 695-25-25 МТС, A1, life:), nikonenkokdoske@yandex.ru.
+    </footer>
+</div>
+</body>
+</html>

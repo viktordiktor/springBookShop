@@ -43,6 +43,10 @@ public class CartDetailsService {
         return cartDetailsRepository.findByBookAndUser(idBook, idUser);
     }
 
+    public List<CartDetails> findByUser(Integer idUser){
+        return cartDetailsRepository.findByUser(idUser);
+    }
+
     @Transactional
     public void delete(int id){
         cartDetailsRepository.deleteById(id);

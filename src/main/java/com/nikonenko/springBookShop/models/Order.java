@@ -8,34 +8,34 @@ import jakarta.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "single_order")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_order")
     private Integer id_order;
 
-    @NotEmpty
+
     @Size(min = 2, max = 100, message = "Address should be between 2 and 70 chars")
     @Column(name = "address")
     private String address;
 
-    @NotEmpty
+
     @Size(min = 2, max = 100, message = "City should be between 2 and 70 chars")
     @Column(name = "city")
     private String city;
 
-    @NotEmpty
+
     @Size(min = 2, max = 100, message = "Phone should be between 2 and 70 chars")
     @Column(name = "phone")
     private String phone;
 
-    @NotEmpty
+
     @Size(min = 2, max = 100, message = "Status should be between 2 and 70 chars")
     @Column(name = "status")
     private String status;
 
-    @NotEmpty
+
     @Min(value = 1, message = "Postmail should be more than one!")
     @Column(name = "post_mail")
     private Integer post_mail;

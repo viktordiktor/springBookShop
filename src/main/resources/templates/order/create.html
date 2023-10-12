@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Список книг</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/general.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/books.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/rating.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/details.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/cart.css}"/>
+</head>
+<body>
+<div class="overlay" id="loading-overlay">Загрузка...</div>
+<div class="overlay" id="message-overlay"></div>
+<div class="grid-container">
+  <header id="header-container">
+  </header>
+  <main id ="main-container">
+    <div class="form-container">
+      <form id="shipping-form" th:method="POST" th:action="@{/order}" th:object="${order}">
+        <ul class="form-items">
+          <li>
+            <h1>Доставка</h1>
+          </li>
+          <li>
+            <label for="address">Адрес</label><input type="text" name="address" id="address" th:field="*{address}"/>
+          </li>
+          <li>
+            <label for="city">Город</label><input name="city" id="city" th:field="*{city}"/>
+          </li>
+          <li>
+            <label for="phone">Телефон</label><input type="text" name="phone" id="phone" th:field="*{phone}"/>
+          </li>
+          <li>
+            <label for="postalCode">Почтовый индекс</label><input type="text" name="postalCode" id="postalCode" th:field="*{post_mail}"/>
+          </li>
+          <li>
+            <button type="submit" class="primary">Заказать</button>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </main>
+  <footer>
+    Общество с ограниченной ответственностью «Виктор Диктор». Свидетельство о государственной регистрации выдано Минским горисполкомом от 19.04.2018 с регистрационным номером 193067319. УНП 193067319.
+    Юр. адрес: 220073, г. Минск, ул. Скрыганова, д. 14, каб. 36. Время работы с понедельника по пятницу с 9:00 до 17:30. Контакты: 695-25-25 МТС, A1, life:), nikonenkokdoske@yandex.ru.
+  </footer>
+  </div>
+</body>
+</html>
