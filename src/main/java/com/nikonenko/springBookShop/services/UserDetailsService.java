@@ -7,6 +7,7 @@ import com.nikonenko.springBookShop.repositories.UserRepository;
 import com.nikonenko.springBookShop.secutiry.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +49,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Transactional
     public void update(int id, User updatedUser){
         updatedUser.setId_user(id);
+        updatedUser.setPassword(new BCryptPasswordEncoder().encode(updatedUser.getPassword()));
         userRepository.save(updatedUser);
     }
 

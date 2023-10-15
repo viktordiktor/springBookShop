@@ -1,14 +1,119 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список книг</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/general.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/books.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/rating.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/details.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/form.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/profile.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
 <body>
-<p th:text="'ID: ' + ${user.getId_user()}"></p>
-<p th:text="'Email:' + ${user.getEmail()}"></p>
-<p th:text="'Password: ' + ${user.getPassword()}"></p>
-<p th:text="'Password: ' + ${user.getRole()}"></p>
-<form th:action="@{/logout}" th:method="post">
-    <input type="submit" value="Logout"/>
-</form>
-
+<div class="overlay" id="loading-overlay">Загрузка...</div>
+<div class="overlay" id="message-overlay"></div>
+<div class="grid-container">
+    <header id="header-container">
+    </header>
+    <main id ="main-container">
+        <div class="content">
+            <div class="content profile">
+                <div class="profile-info">
+                    <div class="form-container">
+                        <form id="profile-form" th:method="PATCH" th:object="${user}" th:action="@{/users/{id}(id=${user.getId_user()})}">
+                            <ul class="form-items">
+                                <li>
+                                    <h1>Профиль пользователя</h1>
+                                </li>
+                                <li>
+                                    <label for="name">ФИО</label>
+                                    <input type="text" id="name" th:field="*{person.name}" />
+                                </li>
+                                <li>
+                                    <label for="gender">Пол</label>
+                                    <select id="gender" th:field="*{person.gender}">
+                                        <option th:value="Мужской" th:text="Мужской"></option>
+                                        <option th:value="Женский" th:text="Женский"></option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" id="email" th:field="*{email}" th:value="${user.getEmail()}" />
+                                </li>
+                                <li>
+                                    <label for="password">Пароль</label>
+                                    <input type="text" name="password" id="password" th:field="*{password}" th:value="${user.getPassword()}" />
+                                </li>
+                                <li>
+                                    <button type="submit" class="primary">Обновить</button>
+                                </li>
+                                <li>
+                                    <button type="button" id="signout-button" th:onclick="'javascript:logout()'">Выйти</button>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+                <div class="profile-orders">
+                    <h2>История заказов</h2>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID заказа</th>
+                            <th>Дата</th>
+                            <th>Сумма</th>
+                            <th>Статус доставки</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${orders.isEmpty()}"><td colspan="5">Заказов не найдено</tr>
+                        <tr th:unless="${orders.isEmpty()}" th:each="orderEntry : ${orders}">
+                            <td th:text="${orderEntry.getKey().getId_order()}"></td>
+                            <td th:text="${orderEntry.getKey().getOrderDate()}"></td>
+                            <td th:text="${orderEntry.getValue()}"></td>
+                            <td th:text="${orderEntry.getKey().getStatus()}"></td>
+                            <td><a th:href="@{/order/{id}(id=${orderEntry.getKey().getId_order()})}">Детали заказа</a> </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        Общество с ограниченной ответственностью «Виктор Диктор». Свидетельство о государственной регистрации выдано Минским горисполкомом от 19.04.2018 с регистрационным номером 193067319. УНП 193067319.
+        Юр. адрес: 220073, г. Минск, ул. Скрыганова, д. 14, каб. 36. Время работы с понедельника по пятницу с 9:00 до 17:30. Контакты: 695-25-25 МТС, A1, life:), nikonenkokdoske@yandex.ru.
+    </footer>
+</div>
 </body>
 </html>
+<script type="application/javascript" th:href="@{/webjars/jquery/3.7.1/jquery.min.js}">
+    function logout(){
+        const token = $("meta[name='_csrf']").attr("content");
+        const header = $("meta[name='_csrf_header']").attr("content");
 
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+
+        $.ajax({
+            type: "POST",
+            url: '/logout'
+        });
+        $(document).ajaxStop(function(){
+            window.location.reload();
+        });
+    }
+
+</script>

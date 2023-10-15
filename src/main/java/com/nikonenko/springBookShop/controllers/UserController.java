@@ -1,21 +1,80 @@
 package com.nikonenko.springBookShop.controllers;
 
+import com.nikonenko.springBookShop.models.Book;
+import com.nikonenko.springBookShop.models.Order;
+import com.nikonenko.springBookShop.models.Person;
+import com.nikonenko.springBookShop.models.User;
 import com.nikonenko.springBookShop.secutiry.UserDetails;
+import com.nikonenko.springBookShop.services.OrderService;
+import com.nikonenko.springBookShop.services.PersonService;
+import com.nikonenko.springBookShop.services.UserDetailsService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
+    public final OrderService orderService;
+    public final UserDetailsService userDetailsService;
+    public final PersonService personService;
+
+    public UserController(OrderService orderService, UserDetailsService userDetailsService, PersonService personService){
+        this.orderService = orderService;
+        this.userDetailsService = userDetailsService;
+        this.personService = personService;
+    }
     @GetMapping("/showUserInfo")
     public String showUserInfo(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails personDetails = (UserDetails) authentication.getPrincipal();
-        model.addAttribute("user", personDetails.user());
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        model.addAttribute("user", userDetails.user());
         return "/users/show";
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model){
+        /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();*/
+        User user = userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user();
+        model.addAttribute("user", user);
+
+        Map<Order, Integer> orderPrice = new HashMap<>();
+        for(Order order : orderService.findAllByUser(user)){
+            int sum = 0;
+            for(Book book : order.getBooks()){
+                Integer idBookOrder = orderService.getIdBookOrder(book.getId_book(), order.getId_order());
+                int amount = orderService.getBookAmount(idBookOrder);
+                sum += amount * book.getPrice();
+            }
+            orderPrice.put(order, sum);
+        }
+        model.addAttribute("orders", orderPrice);
+
+        return "/users/show";
+    }
+
+    @PatchMapping("/{id}")
+    public String updateUser(@PathVariable Integer id, @ModelAttribute User updatedUser){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = userDetails.user();
+        updatedUser.setRole(user.getRole());
+
+        personService.update(id, updatedUser.getPerson());
+        userDetailsService.update(id, updatedUser);
+
+        //userDetailsService.update(id, updatedUser);
+
+        return "redirect:/users/profile";
     }
 }

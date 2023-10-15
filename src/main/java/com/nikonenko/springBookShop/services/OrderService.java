@@ -1,11 +1,13 @@
 package com.nikonenko.springBookShop.services;
 
 import com.nikonenko.springBookShop.models.Order;
+import com.nikonenko.springBookShop.models.User;
 import com.nikonenko.springBookShop.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +31,7 @@ public class OrderService {
 
     @Transactional
     public void save(Order order){
+        order.setOrderDate(new Date());
         orderRepository.save(order);
     }
 
@@ -53,5 +56,9 @@ public class OrderService {
 
     public int getBookAmount(Integer idBookOrder){
         return orderRepository.getBookAmount(idBookOrder);
+    }
+
+    public List<Order> findAllByUser(User user){
+        return orderRepository.findAllByUser(user);
     }
 }

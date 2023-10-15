@@ -26,7 +26,7 @@ public class RegistrationService {
     public void register(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ROLE_USER");
-        personRepository.save(new Person(user, null, null));
+        personRepository.save(new Person(user, "", ""));
         userRepository.save(user);
     }
 }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -40,6 +41,10 @@ public class Order {
     @Column(name = "post_mail")
     private Integer post_mail;
 
+    @Column(name = "date_order")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date orderDate;
+
     @ManyToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     private User user;
@@ -50,12 +55,13 @@ public class Order {
     public Order(){}
 
     public Order(String address, String city, String phone, String status,
-                 Integer post_mail, User user, List<Book> books) {
+                 Integer post_mail, Date orderDate, User user, List<Book> books) {
         this.address = address;
         this.city = city;
         this.phone = phone;
         this.status = status;
         this.post_mail = post_mail;
+        this.orderDate = orderDate;
         this.user = user;
         this.books = books;
     }
@@ -122,5 +128,13 @@ public class Order {
 
     public void setBooks(List<Book> books) {
         this.books = books;
+    }
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
 }
