@@ -47,9 +47,11 @@ public class UserDetailsService implements org.springframework.security.core.use
     }
 
     @Transactional
-    public void update(int id, User updatedUser){
+    public void update(int id, User updatedUser, Person person){
         updatedUser.setId_user(id);
         updatedUser.setPassword(new BCryptPasswordEncoder().encode(updatedUser.getPassword()));
+        updatedUser.setPerson(person);
+        System.out.println("Name: " + person.getName());
         userRepository.save(updatedUser);
     }
 

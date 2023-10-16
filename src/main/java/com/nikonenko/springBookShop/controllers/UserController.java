@@ -46,6 +46,9 @@ public class UserController {
         User user = userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user();
         model.addAttribute("user", user);
 
+        Person person = user.getPerson();
+        model.addAttribute("person", person);
+
         Map<Order, Integer> orderPrice = new HashMap<>();
         for(Order order : orderService.findAllByUser(user)){
             int sum = 0;
@@ -67,11 +70,11 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = userDetails.user();
+        Person person = personService.findOne(id).get();
         updatedUser.setRole(user.getRole());
-
-        personService.update(id, updatedUser.getPerson());
-        userDetailsService.update(id, updatedUser);
-
+        updatedUser.setPerson(person);
+        //personService.update(id, updatedUser.getPerson());
+        userDetailsService.update(id, updatedUser, person);
         //userDetailsService.update(id, updatedUser);
 
         return "redirect:/users/profile";

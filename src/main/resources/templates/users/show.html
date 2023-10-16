@@ -30,21 +30,10 @@
             <div class="content profile">
                 <div class="profile-info">
                     <div class="form-container">
-                        <form id="profile-form" th:method="PATCH" th:object="${user}" th:action="@{/users/{id}(id=${user.getId_user()})}">
+                        <form id="user-form" th:method="PATCH" th:object="${user}" th:action="@{/users/{id}(id=${user.getId_user()})}" >
                             <ul class="form-items">
                                 <li>
-                                    <h1>Профиль пользователя</h1>
-                                </li>
-                                <li>
-                                    <label for="name">ФИО</label>
-                                    <input type="text" id="name" th:field="*{person.name}" />
-                                </li>
-                                <li>
-                                    <label for="gender">Пол</label>
-                                    <select id="gender" th:field="*{person.gender}">
-                                        <option th:value="Мужской" th:text="Мужской"></option>
-                                        <option th:value="Женский" th:text="Женский"></option>
-                                    </select>
+                                    <h1>Данные пользователя</h1>
                                 </li>
                                 <li>
                                     <label for="email">Email</label>
@@ -52,13 +41,34 @@
                                 </li>
                                 <li>
                                     <label for="password">Пароль</label>
-                                    <input type="text" name="password" id="password" th:field="*{password}" th:value="${user.getPassword()}" />
+                                    <input type="password" name="password" id="password" th:field="*{password}" placeholder="********"/>
                                 </li>
                                 <li>
                                     <button type="submit" class="primary">Обновить</button>
                                 </li>
                                 <li>
                                     <button type="button" id="signout-button" th:onclick="'javascript:logout()'">Выйти</button>
+                                </li>
+                            </ul>
+                        </form>
+                        <form id="profile-form" th:method="PATCH" th:object="${person}" th:action="@{/people/{id}(id=${user.getId_user()})}" style="margin-left:10px;">
+                            <ul class="form-items">
+                                <li>
+                                    <h1>Данные о себе</h1>
+                                </li>
+                                <li>
+                                    <label for="name">ФИО</label>
+                                    <input type="text" id="name" th:field="*{name}" />
+                                </li>
+                                <li>
+                                    <label for="gender">Пол</label>
+                                    <select id="gender" th:field="*{gender}">
+                                        <option th:value="Мужской" th:text="Мужской"></option>
+                                        <option th:value="Женский" th:text="Женский"></option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <button type="submit" class="primary">Обновить</button>
                                 </li>
                             </ul>
                         </form>
