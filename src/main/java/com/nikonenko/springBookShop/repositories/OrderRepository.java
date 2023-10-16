@@ -24,7 +24,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     @Query(value = "SELECT amount FROM order_amount oa WHERE oa.id_book_order = ?1",
             nativeQuery = true)
-    int getBookAmount(Integer idBookOrder);
+    Integer getBookAmount(Integer idBookOrder);
 
     List<Order> findAllByUser(User user);
 }

@@ -43,8 +43,6 @@ public class UserController {
 
     @GetMapping("/profile")
     public String profile(Model model){
-        /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();*/
         User user = userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user();
         model.addAttribute("user", user);
 
@@ -53,6 +51,7 @@ public class UserController {
             int sum = 0;
             for(Book book : order.getBooks()){
                 Integer idBookOrder = orderService.getIdBookOrder(book.getId_book(), order.getId_order());
+                System.out.println(idBookOrder);
                 int amount = orderService.getBookAmount(idBookOrder);
                 sum += amount * book.getPrice();
             }

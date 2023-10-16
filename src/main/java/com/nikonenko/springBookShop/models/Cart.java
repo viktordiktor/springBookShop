@@ -3,6 +3,7 @@ package com.nikonenko.springBookShop.models;
 import jakarta.persistence.*;
 import org.springframework.security.core.Transient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,9 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = {CascadeType.REMOVE})
     private List<CartDetails> cartDetails;
 
-    public Cart(){}
+    public Cart(){
+        if(cartDetails == null) cartDetails = new ArrayList<>();
+    }
 
     public Cart(User user, List<CartDetails> cartDetails) {
         this.user = user;

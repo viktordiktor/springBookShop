@@ -54,7 +54,7 @@ public class OrderService {
         return orderRepository.getIdBookOrder(idBook, idOrder);
     }
 
-    public int getBookAmount(Integer idBookOrder){
+    public Integer getBookAmount(Integer idBookOrder){
         return orderRepository.getBookAmount(idBookOrder);
     }
 
