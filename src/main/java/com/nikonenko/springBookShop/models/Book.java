@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "book")
@@ -59,13 +60,13 @@ public class Book {
             joinColumns = @JoinColumn(name = "id_book"),
             inverseJoinColumns = @JoinColumn(name = "id_order")
     )
-    private List<Order> orders;
+    private Set<Order> orders;
 
     public Book(){
     }
 
     public Book(String name, String author, Integer year, Integer pages, String genre, Integer price,
-                Integer amount, String image, List<Review> reviews, List<Order> orders, List<CartDetails> cartDetails) {
+                Integer amount, String image, List<Review> reviews, Set<Order> orders, List<CartDetails> cartDetails) {
         this.name = name;
         this.author = author;
         this.year = year;
@@ -166,11 +167,11 @@ public class Book {
         this.reviews = reviews;
     }
 
-    public List<Order> getOrders() {
+    public Set<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(Set<Order> orders) {
         this.orders = orders;
     }
 

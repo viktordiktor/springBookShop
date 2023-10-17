@@ -51,14 +51,21 @@ public class UserController {
 
         Map<Order, Integer> orderPrice = new HashMap<>();
         for(Order order : orderService.findAllByUser(user)){
+            try {
             int sum = 0;
             for(Book book : order.getBooks()){
                 Integer idBookOrder = orderService.getIdBookOrder(book.getId_book(), order.getId_order());
-                System.out.println(idBookOrder);
-                int amount = orderService.getBookAmount(idBookOrder);
+                System.out.println("ID book_order: " + idBookOrder);
+                Integer amount = orderService.getBookAmount(idBookOrder) != null
+                        ? orderService.getBookAmount(idBookOrder)
+                        : 0;
                 sum += amount * book.getPrice();
             }
+            System.out.println(order.getId_order() + " - " + sum);
             orderPrice.put(order, sum);
+            } catch(NullPointerException e){
+                System.out.println(e.getMessage());
+            }
         }
         model.addAttribute("orders", orderPrice);
 

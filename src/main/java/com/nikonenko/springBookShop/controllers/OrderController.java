@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/order")
@@ -50,10 +52,10 @@ public class OrderController {
 
         List<CartDetails> cartDetailsList = cartDetailsService.findByUser(user.getId_user());
         System.out.println("cartDetailsList found");
-        List<Book> bookList = new ArrayList<>();
+        Set<Book> bookList = new HashSet<>();
         for(CartDetails cartDetails : cartDetailsList){
             Book book = cartDetails.getBook();
-            List<Order> orderList = book.getOrders();
+            Set<Order> orderList = book.getOrders();
             System.out.println("orderList got for Book in cycle");
             orderList.add(order);
             book.setOrders(orderList);

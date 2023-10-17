@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "single_order")
@@ -50,12 +51,12 @@ public class Order {
     private User user;
 
     @ManyToMany(mappedBy = "orders")
-    private List<Book> books;
+    private Set<Book> books;
 
     public Order(){}
 
     public Order(String address, String city, String phone, String status,
-                 Integer post_mail, Date orderDate, User user, List<Book> books) {
+                 Integer post_mail, Date orderDate, User user, Set<Book> books) {
         this.address = address;
         this.city = city;
         this.phone = phone;
@@ -122,11 +123,11 @@ public class Order {
         this.user = user;
     }
 
-    public List<Book> getBooks() {
+    public Set<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(List<Book> books) {
+    public void setBooks(Set<Book> books) {
         this.books = books;
     }
 
