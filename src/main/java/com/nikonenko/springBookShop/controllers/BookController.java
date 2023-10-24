@@ -1,9 +1,8 @@
 package com.nikonenko.springBookShop.controllers;
 
-import com.nikonenko.springBookShop.models.Book;
-import com.nikonenko.springBookShop.models.Person;
 import com.nikonenko.springBookShop.models.Review;
 import com.nikonenko.springBookShop.services.BookService;
+import com.nikonenko.springBookShop.services.UserDetailsService;
 import com.nikonenko.springBookShop.utils.BookValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,8 +35,6 @@ public class BookController {
     public String showBook(Model model, @PathVariable("id") Integer id, @ModelAttribute("review") Review review){
         if(bookService.findOne(id).isPresent()) {
             model.addAttribute("book", bookService.findOne(id).get());
-            System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-            model.addAttribute("currentUser", SecurityContextHolder.getContext().getAuthentication().getName());
             return "/books/show";
         }
         return "redirect:/books";

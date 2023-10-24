@@ -25,7 +25,7 @@ public class SecurityConfig{
         http
                 .userDetailsService(userDetailsService)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/adminHello").hasRole("ADMIN")
+                        .requestMatchers("/users/admin_panel").hasRole("ADMIN")
                         .requestMatchers( "/public/**").permitAll()
                         .requestMatchers( "/private/**").authenticated()
                         .requestMatchers("/auth/login", "/error",

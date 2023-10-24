@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
   <meta charset="UTF-8">
   <title>Список книг</title>
@@ -20,6 +20,15 @@
 <div class="overlay" id="message-overlay"></div>
 <div class="grid-container">
   <header id="header-container">
+    <div class="brand">
+      <a th:href="@{/books}"><img th:src="@{/public/pictures/logo.png}" alt="logo"></a>
+    </div>
+    <div>
+      <a sec:authorize="isAnonymous()" th:href="@{/login}">Войти</a>
+      <a sec:authorize="isAuthenticated()" th:href="@{/users/profile}">Профиль</a>
+      <a sec:authorize="isAuthenticated()" th:href="@{/cart}">Корзина</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{/users/admin_panel}">Панель администратора</a>
+    </div>
   </header>
   <main id ="main-container">
     <div class="form-container">

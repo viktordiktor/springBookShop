@@ -5,35 +5,50 @@
   <title>Registration</title>
   <link rel="stylesheet" type="text/css" th:href="@{/public/styles/general.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/public/styles/form.css}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="form-container">
-  <form id="register-form" th:method="POST" th:action="@{/auth/registration}" th:object="${user}">
-    <ul class="form-items">
-      <li>
-        <h1>Зарегистрироваться</h1>
-      </li>
-      <li>
-        <label for= "username">E-Mail</label>
-        <input type="email" name="email" placeholder="example@mail.com" th:field="*{email}" id="username" required/>
-        <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Login Error</div>
-      </li>
-      <li>
-        <label for="password">Пароль</label>
-        <input type="password" th:field="*{password}" name="password" id="password" placeholder="********" required/>
-      </li>
-      <li>
-        <button type="submit" class="primary">Зарегистрироваться</button>
-      </li>
-      <li>
-        <div>
-          Уже есть аккаунт?
-          <a th:href="@{/auth/login}">Войдите</a>
-        </div>
-      </li>
-    </ul>
-  </form>
+<div class="grid-container">
+  <header id="header-container">
+  </header>
+  <main id ="main-container">
+    <div class="form-container">
+      <form id="register-form" th:method="POST" th:action="@{/auth/registration}" th:object="${user}">
+        <ul class="form-items">
+          <li>
+            <h1>Зарегистрироваться</h1>
+          </li>
+          <li>
+            <label for= "username">E-Mail</label>
+            <input type="email" name="email" placeholder="example@mail.com" th:field="*{email}" id="username" required/>
+            <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Login Error</div>
+          </li>
+          <li>
+            <label for="password">Пароль</label>
+            <input type="password" th:field="*{password}" name="password" id="password" placeholder="********" required/>
+          </li>
+          <li>
+            <button type="submit" class="primary">Зарегистрироваться</button>
+          </li>
+          <li>
+            <div>
+              Уже есть аккаунт?
+              <a th:href="@{/auth/login}">Войдите</a>
+            </div>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </main>
+  <footer>
+    Общество с ограниченной ответственностью «Виктор Диктор». Свидетельство о государственной регистрации выдано Минским горисполкомом от 19.04.2018 с регистрационным номером 193067319. УНП 193067319.
+    Юр. адрес: 220073, г. Минск, ул. Скрыганова, д. 14, каб. 36. Время работы с понедельника по пятницу с 9:00 до 17:30. Контакты: 695-25-25 МТС, A1, life:), nikonenkokdoske@yandex.ru.
+  </footer>
 </div>
+
+
 </body>
 </html>

@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/users")
@@ -85,5 +87,22 @@ public class UserController {
         //userDetailsService.update(id, updatedUser);
 
         return "redirect:/users/profile";
+    }
+
+    @GetMapping("/admin_panel")
+    public String adminPanel(Model model){
+        model.addAttribute("users", userDetailsService.findAll());
+        List<Order> orders = orderService.findAll();
+        model.addAttribute("orders", orders);
+        int sum = 0;
+        for(Order order : orders){
+            Set<Book> books = order.getBooks();
+            for(Book book : books){
+                sum += book.getPrice() * orderService.getBookAmount(
+                        orderService.getIdBookOrder(book.getId_book(), order.getId_order()));
+            }
+        }
+        model.addAttribute("sold", sum);
+        return "/admin/dashboard";
     }
 }

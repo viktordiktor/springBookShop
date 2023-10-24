@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Список книг</title>
@@ -20,6 +20,15 @@
 <div class="overlay" id="message-overlay"></div>
 <div class="grid-container">
     <header id="header-container">
+        <div class="brand">
+            <a th:href="@{/books}"><img th:src="@{/public/pictures/logo.png}" alt="logo"></a>
+        </div>
+        <div>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}">Войти</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/users/profile}">Профиль</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/cart}">Корзина</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{users//admin_panel}">Панель администратора</a>
+        </div>
     </header>
     <main id ="main-container">
         <div class="content">
@@ -95,10 +104,10 @@
                             Статус: <span th:class="${book.getAmount() > 0} ? 'success' : 'error'" th:text="${book.getAmount() > 0} ? 'В наличии' : 'Нет в наличии'"></span>
                         </li>
                         <li>
-                            <form th:if="${#strings.equals(currentUser, 'anonymousUser')}" th:method="GET" th:action="@{/auth/login}">
+                            <form sec:authorize="isAnonymous()" th:method="GET" th:action="@{/auth/login}">
                                 <button id="add-button-login" class="fw primary" type="submit">Войти чтобы добавить в корзину</button>
                             </form>
-                            <form th:unless="${#strings.equals(currentUser, 'anonymousUser')}" th:method="POST" th:action="@{/cart/{id}(id=${book.getId_book()})}">
+                            <form sec:authorize="isAuthenticated()" th:method="POST" th:action="@{/cart/{id}(id=${book.getId_book()})}">
                                 <button id="add-button" th:value="${book.id_book}"  class="fw primary" type="submit">Добавить в корзину</button>
                             </form>
                         </li>
@@ -106,7 +115,7 @@
                 </div>
                 <div class="details-reviews">
                     <div class="form-container">
-                        <form id="review-form" th:method="POST" th:action="@{/review/{id}(id=${book.getId_book()})}" th:object="${review}" th:unless="${#strings.equals(currentUser, 'anonymousUser')}">
+                        <form id="review-form" th:method="POST" th:action="@{/review/{id}(id=${book.getId_book()})}" th:object="${review}" sec:authorize="isAuthenticated()">
                             <ul class="form-items">
                                 <li> <h3>Оставьте свой отзыв</h3></li>
                                 <li>
@@ -125,7 +134,7 @@
                                 </li>
                             </ul>
                         </form>
-                        <div th:if="${#strings.equals(currentUser, 'anonymousUser')}" style="margin-left: 10px;">
+                        <div sec:authorize="isAnonymous()" style="margin-left: 10px;">
                             <strong><a th:href="@{/login/auth}">Войдите</a></strong> чтобы написать отзыв.
                         </div>
                     </div>
