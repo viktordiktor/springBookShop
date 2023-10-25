@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,5 +96,20 @@ public class OrderController {
                 .mapToInt(entry -> entry.getKey().getPrice() * entry.getValue())
                 .sum());
         return "/order/show";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteOrder(@PathVariable Integer id){
+        orderService.delete(id);
+        return "redirect:/users/admin_panel/orders";
+    }
+
+    @PatchMapping("/deliver/{id}")
+    public String deliverOrder(@PathVariable Integer id, RedirectAttributes redirectAtt){
+        Order order = orderService.findOne(id).get();
+        order.setStatus("Доставлено");
+        orderService.update(id, order);
+        redirectAtt.addAttribute("id", id);
+        return "redirect:/order/{id}";
     }
 }

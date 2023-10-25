@@ -74,13 +74,15 @@
                             <div>Суммарная стоимость</div>
                             <div th:text="${orderPrice} + ' BYN'"></div>
                         </li>
-<!--                        <li>-->
-<!--                            ${-->
-<!--                            !isDelivered && isAdmin-->
-<!--                            ?`<button id="deliver-order-button" class="primary fw"> Доставить заказ </button>`-->
-<!--                            : ''-->
-<!--                            }-->
-<!--                        </li>-->
+                        <li>
+                            <form sec:authorize="hasAuthority('ROLE_ADMIN')"
+                                  th:unless="${order.getStatus().equals('Доставлено')}"
+                                  id="delivery-form" th:method="PATCH"
+                                  th:action="@{/order/deliver/{id}(id=${order.getId_order()})}">
+                                <button type="submit"  id="deliver-order-button"
+                                        class="primary fw">Доставить заказ </button>
+                            </form>
+                        </li>
                     </ul>
                 </div>
             </div>

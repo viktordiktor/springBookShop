@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/public/styles/details.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/public/styles/form.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/public/styles/dashboard.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/profile.css}"/>
 </head>
 <body>
 <div class="overlay" id="loading-overlay">Загрузка...</div>
@@ -35,10 +36,10 @@
         <div class="dashboard">
             <div class="dashboard-menu">
                 <ul>
-                    <li class="selected">
+                    <li>
                         <a th:href="@{/users/admin_panel}">Панель администратора</a>
                     </li>
-                    <li>
+                    <li class="selected">
                         <a th:href="@{/users/admin_panel/orders}">Заказы</a>
                     </li>
                     <li>
@@ -47,27 +48,43 @@
                 </ul>
             </div>
             <div class="dashboard-content">
-                <h1>Панель администратора</h1>
-                <ul class="summary-items">
-                    <li>
-                        <div class="summary-title color1">
-                            <span><i class="fa fa-users"></i> Пользователи</span>
-                        </div>
-                        <div class="summary-body" th:text="${users.size()}"></div>
-                    </li>
-                    <li>
-                        <div class="summary-title color2">
-                            <span><i class="fa fa-users"></i> Заказы</span>
-                        </div>
-                        <div class="summary-body" th:text="${orders.size()}"></div>
-                    </li>
-                    <li>
-                        <div class="summary-title color3">
-                            <span><i class="fa fa-users"></i> Продажи</span>
-                        </div>
-                        <div class="summary-body" th:text="${sold + ' BYN'}"></div>
-                    </li>
-                </ul>
+                <h1>Заказы</h1>
+                <div class="order-list">
+                    <table class="table_sort" id="table_sort">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Дата заказа</th>
+                            <th>Общая цена</th>
+                            <th>ID пользователя</th>
+                            <th>Статус</th>
+                            <th class="tr-action">Действие</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${orders.isEmpty()}"><td colspan="6">Заказов не найдено</tr>
+                        <tr th:unless="${orders.isEmpty()}" th:each="orderEntry : ${orders}">
+                            <td th:text="${orderEntry.getKey().getId_order()}"></td>
+                            <td th:text="${orderEntry.getKey().getOrderDate()}"></td>
+                            <td th:text="${orderEntry.getValue()}"></td>
+                            <td th:text="${orderEntry.getKey().getUser().getId_user()}"></td>
+                            <td th:text="${orderEntry.getKey().getStatus()}"></td>
+                            <td>
+                                <form id="edit-form" th:method="GET"
+                                      th:action="@{/order/{id}(id=${orderEntry.getKey().getId_order()})}"
+                                      th:object="${orderEntry.getKey()}">
+                                    <button type="submit" th:id="${orderEntry.getKey().getId_order()}" class="edit-button">Редактировать</button>
+                                </form>
+                                <form id="delete-form" th:method="DELETE"
+                                      th:action="@{/order/{id}(id=${orderEntry.getKey().getId_order()})}"
+                                      th:object="${orderEntry.getKey()}">
+                                <button type="submit" th:id="${orderEntry.getKey().getId_order()}" class="delete-button">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>

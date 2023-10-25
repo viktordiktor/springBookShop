@@ -50,7 +50,7 @@ public class Order {
     @JoinColumn(name = "id_user", referencedColumnName = "id_user")
     private User user;
 
-    @ManyToMany(mappedBy = "orders")
+    @ManyToMany(mappedBy = "orders", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Book> books;
 
     public Order(){}

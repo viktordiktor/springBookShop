@@ -54,7 +54,7 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.PERSIST)
     private List<CartDetails> cartDetails;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name= "book_order",
             joinColumns = @JoinColumn(name = "id_book"),

@@ -57,7 +57,6 @@ public class UserController {
             int sum = 0;
             for(Book book : order.getBooks()){
                 Integer idBookOrder = orderService.getIdBookOrder(book.getId_book(), order.getId_order());
-                System.out.println("ID book_order: " + idBookOrder);
                 Integer amount = orderService.getBookAmount(idBookOrder) != null
                         ? orderService.getBookAmount(idBookOrder)
                         : 0;
@@ -82,9 +81,7 @@ public class UserController {
         Person person = personService.findOne(id).get();
         updatedUser.setRole(user.getRole());
         updatedUser.setPerson(person);
-        //personService.update(id, updatedUser.getPerson());
         userDetailsService.update(id, updatedUser, person);
-        //userDetailsService.update(id, updatedUser);
 
         return "redirect:/users/profile";
     }
@@ -104,5 +101,33 @@ public class UserController {
         }
         model.addAttribute("sold", sum);
         return "/admin/dashboard";
+    }
+
+    @GetMapping("/admin_panel/orders")
+    public String adminPanelOrders(Model model){
+        Map<Order, Integer> orderPrice = new HashMap<>();
+        for(Order order : orderService.findAll()){
+            try {
+                int sum = 0;
+                for(Book book : order.getBooks()){
+                    Integer idBookOrder = orderService.getIdBookOrder(book.getId_book(), order.getId_order());
+                    Integer amount = orderService.getBookAmount(idBookOrder) != null
+                            ? orderService.getBookAmount(idBookOrder)
+                            : 0;
+                    sum += amount * book.getPrice();
+                }
+                System.out.println(order.getId_order() + " - " + sum);
+                orderPrice.put(order, sum);
+            } catch(NullPointerException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        model.addAttribute("orders", orderPrice);
+        return "/admin/orders";
+    }
+
+    @GetMapping("/admin_panel/books")
+    public String adminPanelBooks(Model model){
+        return "/admin/books";
     }
 }
