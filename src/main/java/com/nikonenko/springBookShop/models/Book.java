@@ -24,11 +24,11 @@ public class Book {
     @Size(min = 2, max = 120, message = "Author should be between 2 and 120 chars")
     @Column(name = "author")
     private String author;
-    @NotEmpty
+
     @Min(value=1700, message = "Year in diapason between 1700 and 2023") @Max(value=2023, message = "Age in diapason between 1700 and 2023")
     @Column(name = "year")
     private Integer year;
-    @NotEmpty
+
     @Min(value = 1, message = "Pages should be more than one!")
     @Column(name = "pages")
     private Integer pages;
@@ -36,11 +36,11 @@ public class Book {
     @Size(min = 2, max = 70, message = "Genre should be between 2 and 70 chars")
     @Column(name = "genre")
     private String genre;
-    @NotEmpty
+
     @Min(value = 1, message = "Price should be more than one!")
     @Column(name = "price")
     private Integer price;
-    @NotEmpty
+
     @Min(value = 1, message = "Amount should be more than one!")
     @Column(name = "amount")
     private Integer amount;

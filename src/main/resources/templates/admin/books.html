@@ -15,8 +15,109 @@
     <link rel="stylesheet" type="text/css" th:href="@{/public/styles/details.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/public/styles/form.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/public/styles/dashboard.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/public/styles/profile.css}"/>
 </head>
 <body>
-
+<div class="overlay" id="loading-overlay">Загрузка...</div>
+<div class="overlay" id="message-overlay"></div>
+<div class="grid-container">
+    <header id="header-container">
+        <div class="brand">
+            <a th:href="@{/books}"><img th:src="@{/public/pictures/logo.png}" alt="logo"></a>
+        </div>
+        <div>
+            <a sec:authorize="isAnonymous()" th:href="@{/login}">Войти</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/users/profile}">Профиль</a>
+            <a sec:authorize="isAuthenticated()" th:href="@{/cart}">Корзина</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{/users/admin_panel}">Панель администратора</a>
+        </div>
+    </header>
+    <main id ="main-container">
+        <div class="dashboard">
+            <div class="dashboard-menu">
+                <ul>
+                    <li>
+                        <a th:href="@{/users/admin_panel}">Панель администратора</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/users/admin_panel/orders}">Заказы</a>
+                    </li>
+                    <li class="selected">
+                        <a th:href="@{/users/admin_panel/books}">Книги</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="dashboard-content">
+                <h1>Книги</h1>
+                <form th:method="GET"
+                      th:action="@{/books/new}">
+                    <button type="submit" id="create-book-button" class="primary">
+                        Добавить книгу
+                    </button>
+                </form>
+                <div class="book-list">
+                    <table class="table_sort" id="table_sort">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Кол-во страниц</th>
+                            <th>Год издания</th>
+                            <th>Жанр</th>
+                            <th>Цена</th>
+                            <th class="tr-action">Действие</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="book : ${books}">
+                            <td th:text="${book.getId_book()}"></td>
+                            <td th:text="${book.getName()}">${book.name}</td>
+                            <td th:text="${book.getPages()}">${book.pages}</td>
+                            <td th:text="${book.getYear()}">${book.year}</td>
+                            <td th:text="${book.getGenre()}">${book.genre}</td>
+                            <td th:text="${book.getPrice()}">${book.price}</td>
+                            <td>
+                                <form id="edit-form" th:method="GET"
+                                      th:action="@{/books/edit/{id}(id=${book.getId_book()})}"
+                                      th:object="${book}">
+                                    <button type="submit" th:id="${book.getId_book()}" class="edit-button">Редактировать</button>
+                                </form>
+                                <form id="delete-form" th:method="DELETE"
+                                      th:action="@{/books/{id}(id=${book.getId_book()})}"
+                                      th:object="${book}">
+                                    <button type="submit" th:id="${book.getId_book()}" class="delete-button">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        Общество с ограниченной ответственностью «Виктор Диктор». Свидетельство о государственной регистрации выдано Минским горисполкомом от 19.04.2018 с регистрационным номером 193067319. УНП 193067319.
+        Юр. адрес: 220073, г. Минск, ул. Скрыганова, д. 14, каб. 36. Время работы с понедельника по пятницу с 9:00 до 17:30. Контакты: 695-25-25 МТС, A1, life:), nikonenkokdoske@yandex.ru.
+    </footer>
+</div>
 </body>
 </html>
+<script>
+    const getSort = ({ target }) => {
+        const order = (target.dataset.order = -(target.dataset.order || -1));
+        const index = [...target.parentNode.cells].indexOf(target);
+        const collator = new Intl.Collator(['en', 'ru'], { numeric: true });
+        const comparator = (index, order) => (a, b) => order * collator.compare(
+            a.children[index].innerHTML,
+            b.children[index].innerHTML
+        );
+
+        for(const tBody of target.closest('table').tBodies)
+            tBody.append(...[...tBody.rows].sort(comparator(index, order)));
+
+        for(const cell of target.parentNode.cells)
+            cell.classList.toggle('sorted', cell === target);
+    };
+
+    document.querySelectorAll('.table_sort thead').forEach(tableTH => tableTH.addEventListener('click', () => getSort(event)));
+</script>

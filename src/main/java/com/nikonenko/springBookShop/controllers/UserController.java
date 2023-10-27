@@ -5,6 +5,7 @@ import com.nikonenko.springBookShop.models.Order;
 import com.nikonenko.springBookShop.models.Person;
 import com.nikonenko.springBookShop.models.User;
 import com.nikonenko.springBookShop.secutiry.UserDetails;
+import com.nikonenko.springBookShop.services.BookService;
 import com.nikonenko.springBookShop.services.OrderService;
 import com.nikonenko.springBookShop.services.PersonService;
 import com.nikonenko.springBookShop.services.UserDetailsService;
@@ -29,11 +30,13 @@ public class UserController {
     public final OrderService orderService;
     public final UserDetailsService userDetailsService;
     public final PersonService personService;
+    public final BookService bookService;
 
-    public UserController(OrderService orderService, UserDetailsService userDetailsService, PersonService personService){
+    public UserController(OrderService orderService, UserDetailsService userDetailsService, PersonService personService, BookService bookService){
         this.orderService = orderService;
         this.userDetailsService = userDetailsService;
         this.personService = personService;
+        this.bookService = bookService;
     }
     @GetMapping("/showUserInfo")
     public String showUserInfo(Model model){
@@ -128,6 +131,7 @@ public class UserController {
 
     @GetMapping("/admin_panel/books")
     public String adminPanelBooks(Model model){
+        model.addAttribute("books", bookService.findAll());
         return "/admin/books";
     }
 }

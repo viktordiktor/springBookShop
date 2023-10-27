@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <title>Список книг</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/general.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/books.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/rating.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/details.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/form.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/dashboard.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/public/styles/profile.css}"/>
+</head>
+<body>
+<div class="overlay" id="loading-overlay">Загрузка...</div>
+<div class="overlay" id="message-overlay"></div>
+<div class="grid-container">
+  <header id="header-container">
+    <div class="brand">
+      <a th:href="@{/books}"><img th:src="@{/public/pictures/logo.png}" alt="logo"></a>
+    </div>
+    <div>
+      <a sec:authorize="isAnonymous()" th:href="@{/login}">Войти</a>
+      <a sec:authorize="isAuthenticated()" th:href="@{/users/profile}">Профиль</a>
+      <a sec:authorize="isAuthenticated()" th:href="@{/cart}">Корзина</a>
+      <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{/users/admin_panel}">Панель администратора</a>
+    </div>
+  </header>
+  <main id ="main-container">
+    <div class="content">
+      <a th:href="@{/users/admin_panel/books}">Вернуться к списку</a>
+    </div>
+    <div class="form-container">
+      <form id="edit-book-form" th:method="POST" th:object="${book}" th:action="@{/books/new}"
+            enctype="multipart/form-data">
+        <ul class="form-items">
+          <li>
+            <h1 th:text="'Добавление книги'"></h1>
+          </li>
+          <li>
+            <label for="name">Название</label>
+            <input type="text" name="name" id="name" th:field="*{name}"/>
+          </li>
+          <li>
+            <label for="author">Автор</label>
+            <input type="text" name="author" id="author" th:field="*{author}"/>
+          </li>
+          <li>
+            <label for="pages">Кол-во страниц</label>
+            <input type="number" name="pages" id="pages" th:field="*{pages}"/>
+          </li>
+          <li>
+            <label for="year">Год издания</label>
+            <input type="number" name="year" id="year" th:field="*{year}" />
+          </li>
+          <li>
+            <label for="genre">Жанр</label>
+            <input type="text" name="genre" id="genre" th:field="*{genre}"/>
+          </li>
+          <li>
+            <label for="img">Изображение (680 x 830)</label>
+            <input type="file" name="img" accept="image/png, image/jpeg" id="img"/>
+          </li>
+          <li>
+            <label for="price">Цена</label>
+            <input type="number" name="price" id="price"
+                   th:field="*{price}"/>
+          </li>
+          <li>
+            <label for="countInStock">Количество</label>
+            <input type="number" name="countInStock" id="countInStock"
+                   th:field="*{amount}"/>
+          </li>
+          <li>
+            <button type="submit" class="primary">Обновить
+            </button>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </main>
+  <footer>
+    Общество с ограниченной ответственностью «Виктор Диктор». Свидетельство о государственной регистрации выдано Минским горисполкомом от 19.04.2018 с регистрационным номером 193067319. УНП 193067319.
+    Юр. адрес: 220073, г. Минск, ул. Скрыганова, д. 14, каб. 36. Время работы с понедельника по пятницу с 9:00 до 17:30. Контакты: 695-25-25 МТС, A1, life:), nikonenkokdoske@yandex.ru.
+  </footer>
+</div>
+
+
+</body>
+</html>

@@ -27,14 +27,15 @@
             <a sec:authorize="isAnonymous()" th:href="@{/login}">Войти</a>
             <a sec:authorize="isAuthenticated()" th:href="@{/users/profile}">Профиль</a>
             <a sec:authorize="isAuthenticated()" th:href="@{/cart}">Корзина</a>
-            <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{users//admin_panel}">Панель администратора</a>
+            <a sec:authorize="hasAuthority('ROLE_ADMIN')" th:href="@{/users/admin_panel}">Панель администратора</a>
         </div>
     </header>
     <main id ="main-container">
         <div class="content">
             <div class="details">
                 <div class="details-image">
-                    <img th:src="@{/public/pictures/{id}/{filename}(id=${book.getId_book()}, filename=${book.getImage()})}" th:alt="${book.getName()}"/>
+                    <img th:src="@{/public/pictures/{id}/{filename}(id=${book.getId_book()}, filename=${book.getImage()})}"
+                         th:alt="'/public/pictures/' + ${book.getId_book()} + '/' + ${book.getImage()}"/>
                 </div>
                 <div class="details-info">
                     <ul>
