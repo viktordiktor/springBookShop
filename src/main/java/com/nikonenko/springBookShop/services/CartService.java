@@ -29,8 +29,6 @@ public class CartService {
 
     @Transactional
     public void save(Cart cart){
-        System.out.println("saving: " + cart.getId_user());
-        System.out.println("saving: " + cart.getUser().getEmail());
         cartRepository.save(cart);
     }
 

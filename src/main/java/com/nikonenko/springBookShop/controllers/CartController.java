@@ -46,13 +46,11 @@ public class CartController {
         Book book = bookService.findOne(id).get();
         if(cartDetailsService.findByBookAndUser(book.getId_book(), user.getId_user()).isEmpty()){
             cartDetailsService.save(new CartDetails(book, cart, 1));
-            System.out.println("created");
         } else{
             cartDetailsService.update
                     (cartDetailsService.findByBookAndUser(book.getId_book(), user.getId_user()).get().getId_details(),
                             new CartDetails(book, cart, cartDetailsService.
                     findByBookAndUser(book.getId_book(), user.getId_user()).get().getAmount() + 1));
-            System.out.println("updated");
         }
         CartDetails cartDetails = cartDetailsService.findByBookAndUser(book.getId_book(), user.getId_user()).get();
 
@@ -90,7 +88,6 @@ public class CartController {
 
     @PostMapping("/{id}/{amount}")
     public String editAmount(@PathVariable Integer id, @PathVariable Integer amount){
-        System.out.println("controller method");
         CartDetails cartDetails = cartDetailsService.findOne(id).get();
         cartDetails.setAmount(amount);
         cartDetailsService.update(id, cartDetails);

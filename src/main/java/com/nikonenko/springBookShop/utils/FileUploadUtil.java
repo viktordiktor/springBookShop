@@ -17,15 +17,12 @@ public class FileUploadUtil {
 
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
-            System.out.println("Creating Directory at " + uploadPath.toAbsolutePath().toString());
         }
 
         try (InputStream inputStream = multipartFile.getInputStream()) {
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("Saving file");
         } catch (IOException ioe) {
-            System.out.println("Error");
             throw new IOException("Could not save image file: " + fileName, ioe);
         }
     }

@@ -51,7 +51,6 @@ public class UserDetailsService implements org.springframework.security.core.use
         updatedUser.setId_user(id);
         updatedUser.setPassword(new BCryptPasswordEncoder().encode(updatedUser.getPassword()));
         updatedUser.setPerson(person);
-        System.out.println("Name: " + person.getName());
         userRepository.save(updatedUser);
     }
 

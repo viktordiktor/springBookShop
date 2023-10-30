@@ -65,10 +65,9 @@ public class UserController {
                         : 0;
                 sum += amount * book.getPrice();
             }
-            System.out.println(order.getId_order() + " - " + sum);
             orderPrice.put(order, sum);
             } catch(NullPointerException e){
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
         model.addAttribute("orders", orderPrice);
@@ -119,10 +118,9 @@ public class UserController {
                             : 0;
                     sum += amount * book.getPrice();
                 }
-                System.out.println(order.getId_order() + " - " + sum);
                 orderPrice.put(order, sum);
             } catch(NullPointerException e){
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         }
         model.addAttribute("orders", orderPrice);

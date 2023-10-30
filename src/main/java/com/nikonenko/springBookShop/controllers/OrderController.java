@@ -49,25 +49,19 @@ public class OrderController {
     public String createOrder(@ModelAttribute("order") Order order){
         User user = userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user();
         order.setUser(user);
-        System.out.println("user setted for order");
 
         List<CartDetails> cartDetailsList = cartDetailsService.findByUser(user.getId_user());
-        System.out.println("cartDetailsList found");
         Set<Book> bookList = new HashSet<>();
         for(CartDetails cartDetails : cartDetailsList){
             Book book = cartDetails.getBook();
             Set<Order> orderList = book.getOrders();
-            System.out.println("orderList got for Book in cycle");
             orderList.add(order);
             book.setOrders(orderList);
-            System.out.println("orders setted for book");
             bookList.add(book);
         }
         order.setBooks(bookList);
-        System.out.println("bookList setted for order");
         order.setStatus("Не доставлено");
         orderService.save(order);
-        System.out.println("order saved");
 
         for(CartDetails cartDetails : cartDetailsList){
             int idBookOrder = orderService.getIdBookOrder(cartDetails.getBook().getId_book(), order.getId_order());
@@ -75,7 +69,6 @@ public class OrderController {
         }
 
         cartService.delete(user.getId_user());
-        System.out.println("cart deleted");
 
         return "redirect:/order/" + order.getId_order();
     }
