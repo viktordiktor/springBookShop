@@ -4,7 +4,7 @@ import com.nikonenko.springBookShop.models.Person;
 import com.nikonenko.springBookShop.models.User;
 import com.nikonenko.springBookShop.secutiry.UserDetails;
 import com.nikonenko.springBookShop.services.PersonService;
-import com.nikonenko.springBookShop.services.UserDetailsService;
+import com.nikonenko.springBookShop.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/people")
 public class PersonController {
-    public final UserDetailsService userDetailsService;
+    public final UserService userService;
     public final PersonService personService;
 
-    public PersonController(UserDetailsService userDetailsService, PersonService personService) {
-        this.userDetailsService = userDetailsService;
+    public PersonController(UserService userService, PersonService personService) {
+        this.userService = userService;
         this.personService = personService;
     }
 

@@ -12,6 +12,9 @@
     <link rel="stylesheet" type="text/css" th:href="@{/public/styles/general.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/public/styles/books.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/public/styles/rating.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <body>
 <div class="overlay" id="loading-overlay">Загрузка...</div>
@@ -88,14 +91,50 @@
                 </div>
             </li>
         </ul>
+        <img id="openPopup" th:src="@{/public/pictures/search.png}" alt="search">
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <h2>Поиск</h2>
+                <form class="search-form" id="search-form">
+                    <input type="text" placeholder="Введите данные для поиска" id="inputSearch" required>
+                    <select id="selectSearch">
+                        <option value="title" selected>По названию</option>
+                        <option value="author">По автору</option>
+                        <option value="genre">По жанру</option>
+                    </select>
+                    <button type="submit" id="searchButton">Найти</button>
+                </form>
+                <span id="closePopup" class="close-icon">&times;</span>
+            </div>
+        </div>
     </main>
     <footer>
         Общество с ограниченной ответственностью «Виктор Диктор». Свидетельство о государственной регистрации выдано Минским горисполкомом от 19.04.2018 с регистрационным номером 193067319. УНП 193067319.
         Юр. адрес: 220073, г. Минск, ул. Скрыганова, д. 14, каб. 36. Время работы с понедельника по пятницу с 9:00 до 17:30. Контакты: 695-25-25 МТС, A1, life:), nikonenkokdoske@yandex.ru.
     </footer>
 </div>
-
-
 </body>
 </html>
+<script type="application/javascript" th:href="@{/webjars/jquery/3.7.1/jquery.min.js}">
+    $(document).ready(function() {
+        $("#openPopup").click(function() {
+            $("#popup").fadeIn();
+        });
+
+        $("#closePopup").click(function() {
+            $("#popup").fadeOut();
+        });
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+
+        $("#search-form").submit( function(e) {
+            e.preventDefault();
+            window.location.replace('/books/' + $("#selectSearch").find(":selected").val() + '/' + $("#inputSearch").val());
+        });
+    });
+
+</script>
 

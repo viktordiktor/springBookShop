@@ -33,9 +33,9 @@ public class BookService {
     }
 
     @Transactional
-    public void update(int id, Book updatedBook){
+    public Book update(int id, Book updatedBook){
         updatedBook.setId_book(id);
-        bookRepository.save(updatedBook);
+        return bookRepository.save(updatedBook);
     }
 
     @Transactional
@@ -43,4 +43,15 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
+    public List<Book> findByAuthorContaining(String author){
+        return bookRepository.findByAuthorContainingIgnoreCase(author);
+    }
+
+    public List<Book> findByGenreContaining(String genre){
+        return bookRepository.findByGenreContainingIgnoreCase(genre);
+    }
+
+    public List<Book> findByNameContaining(String name){
+        return bookRepository.findByNameContainingIgnoreCase(name);
+    }
 }

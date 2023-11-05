@@ -84,6 +84,17 @@ a:hover{
     height:100%
 }
 
+main {
+    overflow: auto;
+}
+
+#openPopup{
+    position: absolute;
+    bottom: 50px; /* Измените значение в соответствии с вашим дизайном */
+    right: 20px; /* Измените значение в соответствии с вашим дизайном */
+    z-index: 998; /* Установите более высокий z-index, чтобы кнопка была поверх всплывающего окна */
+}
+
 header{
     grid-area: header;
     background-color: sienna;
@@ -122,4 +133,84 @@ footer{
     align-items: center;
     color: white;
     font-size: 1rem;
+}
+
+
+.popup {
+    position: fixed;
+    bottom: 1px; /* Отступ снизу */
+    right: 1px; /* Отступ справа */
+    width: 400px; /* Ширина всплывающего окна */
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 999; /* Устанавливаем более высокий z-index, чтобы окно было поверх других элементов */
+}
+
+.popup-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.popup-content h2 {
+    margin-bottom: 20px;
+}
+
+.search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-form input[type="text"],
+.search-form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+#searchButton {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#searchButton:hover {
+    background-color: #45a049;
+}
+
+.close-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+}
+
+#openPopup {
+    width: 120px; /* Установите желаемую ширину изображения */
+    height: 120px; /* Установите желаемую высоту изображения */
+}
+
+.search-result-heading {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.no-books-found {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
 }

@@ -39,3 +39,7 @@
 .book-price{
     font-size: 2rem;
 }
+
+img:hover {
+    cursor: pointer;
+}

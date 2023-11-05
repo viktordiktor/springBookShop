@@ -5,7 +5,7 @@ import com.nikonenko.springBookShop.models.Review;
 import com.nikonenko.springBookShop.models.User;
 import com.nikonenko.springBookShop.services.BookService;
 import com.nikonenko.springBookShop.services.ReviewService;
-import com.nikonenko.springBookShop.services.UserDetailsService;
+import com.nikonenko.springBookShop.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -18,18 +18,19 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
     private final BookService bookService;
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     @Autowired
-    public ReviewController(ReviewService reviewService, BookService bookService, UserDetailsService userDetailsService) {
+    public ReviewController(ReviewService reviewService, BookService bookService, UserService userService) {
         this.reviewService = reviewService;
         this.bookService = bookService;
-        this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     @PostMapping("/{id}")
     public String createReview(@PathVariable Integer id, @ModelAttribute Review review){
-        review.setUser(userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user());
+        review.setUser(userService.loadUserByUsername(SecurityContextHolder.getContext()
+                .getAuthentication().getName()).user());
         review.setBook(bookService.findOne(id).get());
         reviewService.save(review);
 
@@ -38,7 +39,7 @@ public class ReviewController {
         reviews.add(review);
         reviewedBook.setReviews(reviews);
 
-        User user = userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user();
+        User user = userService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user();
         List<Review> usersReviews = user.getReviews();
         usersReviews.add(review);
         user.setReviews(usersReviews);

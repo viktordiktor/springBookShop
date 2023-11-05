@@ -8,7 +8,7 @@ import com.nikonenko.springBookShop.secutiry.UserDetails;
 import com.nikonenko.springBookShop.services.BookService;
 import com.nikonenko.springBookShop.services.OrderService;
 import com.nikonenko.springBookShop.services.PersonService;
-import com.nikonenko.springBookShop.services.UserDetailsService;
+import com.nikonenko.springBookShop.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,13 +28,13 @@ import java.util.Set;
 @RequestMapping("/users")
 public class UserController {
     public final OrderService orderService;
-    public final UserDetailsService userDetailsService;
+    public final UserService userService;
     public final PersonService personService;
     public final BookService bookService;
 
-    public UserController(OrderService orderService, UserDetailsService userDetailsService, PersonService personService, BookService bookService){
+    public UserController(OrderService orderService, UserService userService, PersonService personService, BookService bookService){
         this.orderService = orderService;
-        this.userDetailsService = userDetailsService;
+        this.userService = userService;
         this.personService = personService;
         this.bookService = bookService;
     }
@@ -48,7 +48,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public String profile(Model model){
-        User user = userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user();
+        User user = userService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user();
         model.addAttribute("user", user);
 
         Person person = user.getPerson();
@@ -83,14 +83,14 @@ public class UserController {
         Person person = personService.findOne(id).get();
         updatedUser.setRole(user.getRole());
         updatedUser.setPerson(person);
-        userDetailsService.update(id, updatedUser, person);
+        userService.update(id, updatedUser, person);
 
         return "redirect:/users/profile";
     }
 
     @GetMapping("/admin_panel")
     public String adminPanel(Model model){
-        model.addAttribute("users", userDetailsService.findAll());
+        model.addAttribute("users", userService.findAll());
         List<Order> orders = orderService.findAll();
         model.addAttribute("orders", orders);
         int sum = 0;

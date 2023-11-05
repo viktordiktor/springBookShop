@@ -105,11 +105,13 @@
                             Статус: <span th:class="${book.getAmount() > 0} ? 'success' : 'error'" th:text="${book.getAmount() > 0} ? 'В наличии' : 'Нет в наличии'"></span>
                         </li>
                         <li>
-                            <form sec:authorize="isAnonymous()" th:method="GET" th:action="@{/auth/login}">
-                                <button id="add-button-login" class="fw primary" type="submit">Войти чтобы добавить в корзину</button>
+                            <form  sec:authorize="isAnonymous()" th:method="GET" th:action="@{/auth/login}">
+                                <button id="add-button-login" class="fw primary" type="submit"
+                                        >Войти чтобы добавить в корзину</button>
                             </form>
                             <form sec:authorize="isAuthenticated()" th:method="POST" th:action="@{/cart/{id}(id=${book.getId_book()})}">
-                                <button id="add-button" th:value="${book.id_book}"  class="fw primary" type="submit">Добавить в корзину</button>
+                                <button id="add-button" th:value="${book.id_book}"  class="fw primary" type="submit"
+                                >Добавить в корзину</button>
                             </form>
                         </li>
                     </ul>

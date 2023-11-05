@@ -14,7 +14,6 @@ public class BookValidator implements Validator {
         this.bookService = bookService;
     }
 
-
     @Override
     public boolean supports(Class<?> clazz) {
         return Book.class.equals(clazz);

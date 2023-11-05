@@ -4,19 +4,14 @@ import com.nikonenko.springBookShop.models.Book;
 import com.nikonenko.springBookShop.models.CartDetails;
 import com.nikonenko.springBookShop.models.Order;
 import com.nikonenko.springBookShop.models.User;
-import com.nikonenko.springBookShop.repositories.OrderRepository;
 import com.nikonenko.springBookShop.services.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,15 +24,15 @@ public class OrderController {
     private final OrderService orderService;
     private final CartDetailsService cartDetailsService;
     private final CartService cartService;
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     @Autowired
     public OrderController(OrderService orderService, CartDetailsService cartDetailsService, CartService cartService,
-                           UserDetailsService userDetailsService) {
+                           UserService userService) {
         this.orderService = orderService;
         this.cartDetailsService = cartDetailsService;
         this.cartService = cartService;
-        this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     @GetMapping("/details")
@@ -47,7 +42,8 @@ public class OrderController {
 
     @PostMapping()
     public String createOrder(@ModelAttribute("order") Order order){
-        User user = userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user();
+        User user = userService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication()
+                .getName()).user();
         order.setUser(user);
 
         List<CartDetails> cartDetailsList = cartDetailsService.findByUser(user.getId_user());
@@ -99,7 +95,7 @@ public class OrderController {
 
     @PatchMapping("/deliver/{id}")
     public String deliverOrder(@PathVariable Integer id, RedirectAttributes redirectAtt){
-        Order order = orderService.findOne(id).get();
+        Order order = orderService.findOne(id).isPresent() ? orderService.findOne(id).get() : new Order();
         order.setStatus("Доставлено");
         orderService.update(id, order);
         redirectAtt.addAttribute("id", id);

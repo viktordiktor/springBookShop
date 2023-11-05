@@ -7,10 +7,8 @@ import com.nikonenko.springBookShop.models.User;
 import com.nikonenko.springBookShop.services.BookService;
 import com.nikonenko.springBookShop.services.CartDetailsService;
 import com.nikonenko.springBookShop.services.CartService;
-import com.nikonenko.springBookShop.services.UserDetailsService;
-import jakarta.validation.Valid;
+import com.nikonenko.springBookShop.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Transient;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,25 +23,27 @@ public class CartController {
     private final CartService cartService;
     private final CartDetailsService cartDetailsService;
     private final BookService bookService;
-    private final UserDetailsService userDetailsService;
+    private final UserService userService;
 
     @Autowired
-    public CartController(CartService cartService, CartDetailsService cartDetailsService, BookService bookService, UserDetailsService userDetailsService) {
+    public CartController(CartService cartService, CartDetailsService cartDetailsService, BookService bookService, UserService userService) {
         this.cartService = cartService;
         this.cartDetailsService = cartDetailsService;
         this.bookService = bookService;
-        this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     @PostMapping("/{id}")
     public String addToCart(@PathVariable Integer id){
-        User user = userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).user();
+        User user = userService.loadUserByUsername(SecurityContextHolder.getContext()
+                .getAuthentication().getName()).user();
         if(cartService.findOne(user.getId_user()).isEmpty()){
             cartService.save(new Cart(user, null));
         }
         Cart cart = cartService.findOne(user.getId_user()).get();
 
         Book book = bookService.findOne(id).get();
+
         if(cartDetailsService.findByBookAndUser(book.getId_book(), user.getId_user()).isEmpty()){
             cartDetailsService.save(new CartDetails(book, cart, 1));
         } else{
@@ -52,6 +52,7 @@ public class CartController {
                             new CartDetails(book, cart, cartDetailsService.
                     findByBookAndUser(book.getId_book(), user.getId_user()).get().getAmount() + 1));
         }
+
         CartDetails cartDetails = cartDetailsService.findByBookAndUser(book.getId_book(), user.getId_user()).get();
 
         List<CartDetails> booksCartDetails = book.getCartDetails();
@@ -75,12 +76,12 @@ public class CartController {
 
     @GetMapping()
     public String showCart(Model model, @ModelAttribute Book book){
-        model.addAttribute("user", userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().
+        model.addAttribute("user", userService.loadUserByUsername(SecurityContextHolder.getContext().
                 getAuthentication().getName()).user());
-        Cart cart = cartService.findOne(userDetailsService.loadUserByUsername
+        Cart cart = cartService.findOne(userService.loadUserByUsername
                 (SecurityContextHolder.getContext().getAuthentication().getName()).user().getId_user()).get();
         List<CartDetails> cartDetailsList = cart.getCartDetails();
-        model.addAttribute("cart", cartService.findOne(userDetailsService.loadUserByUsername
+        model.addAttribute("cart", cartService.findOne(userService.loadUserByUsername
                 (SecurityContextHolder.getContext().getAuthentication().getName()).user().getId_user()).get());
         model.addAttribute("cartDetails", cartDetailsList);
         return "cart/show";

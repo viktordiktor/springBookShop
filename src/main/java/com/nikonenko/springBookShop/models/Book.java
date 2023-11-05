@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -181,5 +182,25 @@ public class Book {
 
     public void setCartDetails(List<CartDetails> cartDetails) {
         this.cartDetails = cartDetails;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(name, book.name) &&
+                Objects.equals(author, book.author) &&
+                Objects.equals(year, book.year) &&
+                Objects.equals(pages, book.pages) &&
+                Objects.equals(genre, book.genre) &&
+                Objects.equals(amount, book.amount) &&
+                Objects.equals(price, book.price) &&
+                Objects.equals(image, book.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, author, year, pages, genre, amount, price, image);
     }
 }

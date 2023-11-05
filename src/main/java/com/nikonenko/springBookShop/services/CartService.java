@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CartService {
+public class CartService{
     private final CartRepository cartRepository;
 
     @Autowired

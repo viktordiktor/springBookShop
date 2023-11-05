@@ -1,6 +1,7 @@
 package com.nikonenko.springBookShop.services;
 
 import com.nikonenko.springBookShop.models.Person;
+import com.nikonenko.springBookShop.repositories.CartRepository;
 import com.nikonenko.springBookShop.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

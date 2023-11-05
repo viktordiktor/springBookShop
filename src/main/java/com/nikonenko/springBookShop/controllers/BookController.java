@@ -3,12 +3,9 @@ package com.nikonenko.springBookShop.controllers;
 import com.nikonenko.springBookShop.models.Book;
 import com.nikonenko.springBookShop.models.Review;
 import com.nikonenko.springBookShop.services.BookService;
-import com.nikonenko.springBookShop.services.UserDetailsService;
 import com.nikonenko.springBookShop.utils.BookValidator;
 import com.nikonenko.springBookShop.utils.FileUploadUtil;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -24,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -114,7 +113,28 @@ public class BookController {
         } catch(IOException e){
             //TODO: catch
         }
-
         return "redirect:/users/admin_panel/books";
+    }
+
+    @GetMapping("/{category}/{text}")
+    public String findBooks(Model model, @PathVariable("category") String category, @PathVariable("text") String text){
+        List<Book> books;
+        switch(category){
+            case "title" -> {
+                books = bookService.findByNameContaining(text);
+            }
+            case "author" -> {
+                books = bookService.findByAuthorContaining(text);
+            }
+            case "genre" -> {
+                books = bookService.findByGenreContaining(text);
+            }
+            default -> {
+                return "redirect:/books";
+            }
+        }
+        model.addAttribute("books", books);
+        System.out.println(books.size());
+        return "/books/find";
     }
 }
