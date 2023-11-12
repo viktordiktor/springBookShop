@@ -49,6 +49,7 @@ class ReviewServiceTest {
         final List<Review> result = reviewServiceUnderTest.findAll();
 
         // Verify the results
+        assertThat(result).isEqualTo(reviews);
     }
 
     @Test
@@ -81,6 +82,7 @@ class ReviewServiceTest {
         final Optional<Review> result = reviewServiceUnderTest.findOne(0);
 
         // Verify the results
+        assertThat(result).isEqualTo(review);
     }
 
     @Test

@@ -84,6 +84,7 @@ class UserServiceTest {
         final List<User> result = userServiceUnderTest.findAll();
 
         // Verify the results
+        assertThat(result).isEqualTo(users);
     }
 
     @Test
@@ -116,6 +117,7 @@ class UserServiceTest {
         final Optional<User> result = userServiceUnderTest.findOne(0);
 
         // Verify the results
+        assertThat(result).isEqualTo(user);
     }
 
     @Test

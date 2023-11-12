@@ -39,7 +39,6 @@ class BookServiceTest {
         book.setYear(2020);
         book.setPages(0);
         final List<Book> expectedResult = List.of(book);
-
         // Configure BookRepository.findAll(...).
         final Book book1 = new Book();
         book1.setId_book(0);
@@ -49,10 +48,8 @@ class BookServiceTest {
         book1.setPages(0);
         final List<Book> books = List.of(book1);
         when(mockBookRepository.findAll()).thenReturn(books);
-
         // Run the test
         final List<Book> result = bookServiceUnderTest.findAll();
-
         // Verify the results
         assertThat(result).isEqualTo(expectedResult);
     }
@@ -61,10 +58,8 @@ class BookServiceTest {
     void testFindAll_BookRepositoryReturnsNoItems() {
         // Setup
         when(mockBookRepository.findAll()).thenReturn(Collections.emptyList());
-
         // Run the test
         final List<Book> result = bookServiceUnderTest.findAll();
-
         // Verify the results
         assertThat(result).isEqualTo(Collections.emptyList());
     }

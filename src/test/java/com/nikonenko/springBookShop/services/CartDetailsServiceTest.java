@@ -48,7 +48,7 @@ class CartDetailsServiceTest {
         // Run the test
         final List<CartDetails> result = cartDetailsServiceUnderTest.findAll();
 
-        // Verify the results
+        assertThat(result).isEqualTo(cartDetails);
     }
 
     @Test
@@ -81,6 +81,7 @@ class CartDetailsServiceTest {
         final Optional<CartDetails> result = cartDetailsServiceUnderTest.findOne(0);
 
         // Verify the results
+        assertThat(result).isEqualTo(cartDetails);
     }
 
     @Test
@@ -149,6 +150,7 @@ class CartDetailsServiceTest {
         final Optional<CartDetails> result = cartDetailsServiceUnderTest.findByBookAndUser(0, 0);
 
         // Verify the results
+        assertThat(result).isEqualTo(cartDetails);
     }
 
     @Test
@@ -181,6 +183,7 @@ class CartDetailsServiceTest {
         final List<CartDetails> result = cartDetailsServiceUnderTest.findByUser(0);
 
         // Verify the results
+        assertThat(result).isEqualTo(cartDetails);
     }
 
     @Test

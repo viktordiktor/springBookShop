@@ -49,6 +49,7 @@ class PersonServiceTest {
         final List<Person> result = personServiceUnderTest.findAll();
 
         // Verify the results
+        assertThat(result).isEqualTo(people);
     }
 
     @Test
@@ -81,6 +82,7 @@ class PersonServiceTest {
         final Optional<Person> result = personServiceUnderTest.findOne(0);
 
         // Verify the results
+        assertThat(result).isEqualTo(person);
     }
 
     @Test

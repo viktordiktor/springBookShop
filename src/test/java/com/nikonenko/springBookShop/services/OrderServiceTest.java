@@ -36,8 +36,6 @@ class OrderServiceTest {
 
     @Test
     void testFindAll() {
-        // Setup
-        // Configure OrderRepository.findAll(...).
         final Order order = new Order();
         order.setId_order(0);
         order.setAddress("address");
@@ -47,21 +45,17 @@ class OrderServiceTest {
         final List<Order> orders = List.of(order);
         when(mockOrderRepository.findAll()).thenReturn(orders);
 
-        // Run the test
         final List<Order> result = orderServiceUnderTest.findAll();
 
-        // Verify the results
+        assertThat(result).isEqualTo(orders);
     }
 
     @Test
     void testFindAll_OrderRepositoryReturnsNoItems() {
-        // Setup
         when(mockOrderRepository.findAll()).thenReturn(Collections.emptyList());
 
-        // Run the test
         final List<Order> result = orderServiceUnderTest.findAll();
 
-        // Verify the results
         assertThat(result).isEqualTo(Collections.emptyList());
     }
 
@@ -82,6 +76,7 @@ class OrderServiceTest {
         final Optional<Order> result = orderServiceUnderTest.findOne(0);
 
         // Verify the results
+        assertThat(result).isEqualTo(order);
     }
 
     @Test
@@ -199,6 +194,7 @@ class OrderServiceTest {
         final List<Order> result = orderServiceUnderTest.findAllByUser(user);
 
         // Verify the results
+        assertThat(result).isEqualTo(orders);
     }
 
     @Test

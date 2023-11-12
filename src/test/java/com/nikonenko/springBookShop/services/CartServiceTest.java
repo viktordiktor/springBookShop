@@ -49,6 +49,7 @@ class CartServiceTest {
         final List<Cart> result = cartServiceUnderTest.findAll();
 
         // Verify the results
+        assertThat(result).isEqualTo(carts);
     }
 
     @Test
@@ -81,6 +82,7 @@ class CartServiceTest {
         final Optional<Cart> result = cartServiceUnderTest.findOne(0);
 
         // Verify the results
+        assertThat(result).isEqualTo(cart);
     }
 
     @Test
