@@ -79,6 +79,7 @@ public class OrderController {
             Integer idBookOrder = orderService.getIdBookOrder(book.getId_book(), order.getId_order());
             bookAmountMap.put(book, orderService.getBookAmount(idBookOrder));
         }
+
         model.addAttribute("bookAmountMap", bookAmountMap);
 
         model.addAttribute("orderPrice", bookAmountMap.entrySet().stream()

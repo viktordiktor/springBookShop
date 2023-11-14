@@ -33,7 +33,7 @@
     </header>
     <main id ="main-container">
         <ul class="books" >
-            <li th:each="book : ${books}">
+            <li th:each="book : ${pagedBooks.content}">
                 <div class="book">
                     <a th:href="@{/books/{id}(id=${book.getId_book()})}">
                         <img th:src="@{/public/pictures/{id}/{filename}(id=${book.getId_book()}, filename=${book.getImage()})}" th:alt="${book.getName()}"/>
@@ -89,6 +89,23 @@
                         <p th:text="${book.getPrice()} + ' BYN'">Price</p>
                     </div>
                 </div>
+            </li>
+        </ul>
+        <ul class="pagination">
+            <li>
+                <a th:href="@{/books(page=${pagedBooks.number - 1})}" aria-label="Previous">
+                    &laquo;
+                </a>
+            </li>
+            <li th:each="pageNum : ${#numbers.sequence(0, pagedBooks.totalPages - 1)}">
+                <a th:href="@{/books(page=${pageNum})}" th:class="${pageNum == pagedBooks.number} ? 'active' : ''">
+                    <span th:text="${pageNum + 1}"></span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/books(page=${pagedBooks.number + 1})}" aria-label="Next">
+                    &raquo;
+                </a>
             </li>
         </ul>
         <img id="openPopup" th:src="@{/public/pictures/search.png}" alt="search">
