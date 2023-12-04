@@ -1,6 +1,6 @@
 # Spring + Hibernate + React + Lombok + JWT App
-    Server-side: Spring Boot, Spring MVC, Spring Security (with JWT Token), Spring Data JPA, Hibernate
-    Client-side: Thymeleaf
+    Server-side: Spring Boot, Spring MVC, Spring Security, Spring Data JPA, Hibernate
+    Client-side: Thymeleaf, JS/jQuery
     Database: MySQL
 # Quick Start
     # clone repo
