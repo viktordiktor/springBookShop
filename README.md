@@ -4,7 +4,7 @@
     Database: MySQL
 # Quick Start
     # clone repo
-    git clone https://github.com/viktordiktor/springReactRent.git
+    git clone https://github.com/viktordiktor/springBookShop.git
 
     # edit database settings in application.properties
     spring.datasource.url=jdbc:mysql://localhost:3306/*your_db*
