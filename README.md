@@ -1,4 +1,4 @@
-# Spring + Hibernate + React + Lombok + JWT App
+# Spring + Hibernate + Thymeleaf App
     Server-side: Spring Boot, Spring MVC, Spring Security, Spring Data JPA, Hibernate
     Client-side: Thymeleaf, JS/jQuery
     Database: MySQL
