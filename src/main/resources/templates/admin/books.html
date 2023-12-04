@@ -85,7 +85,7 @@
                                 <form id="delete-form" th:method="DELETE"
                                       th:action="@{/books/{id}(id=${book.getId_book()})}"
                                       th:object="${book}">
-                                    <button type="submit" th:id="${book.getId_book()}" class="delete-button">Удалить</button>
+                                    <button type="button" th:id="${book.getId_book()}" class="delete-button" onclick="confirmDelete(this)">Удалить</button>
                                 </form>
                             </td>
                         </tr>
@@ -103,6 +103,11 @@
 </body>
 </html>
 <script>
+    function confirmDelete(button) {
+        if (confirm("Вы уверены, что хотите удалить эту книгу?")) {
+            button.parentNode.submit();
+        }
+    }
     const getSort = ({ target }) => {
         const order = (target.dataset.order = -(target.dataset.order || -1));
         const index = [...target.parentNode.cells].indexOf(target);

@@ -67,7 +67,7 @@
                                 </li>
                                 <li>
                                     <label for="name">ФИО</label>
-                                    <input type="text" id="name" th:field="*{name}" />
+                                    <input type="text" id="name" th:field="*{name}" pattern="[А-ЯЁ][а-яё]+\s[А-ЯЁ][а-яё]+\s[А-ЯЁ][а-яё]+" />
                                 </li>
                                 <li>
                                     <label for="gender">Пол</label>
